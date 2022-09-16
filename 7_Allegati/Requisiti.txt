@@ -1,0 +1,86 @@
+Requisti
+_______________________
+
+ - Nome: Generazione Mappa
+   Priorita: 1
+   Note: Si deve usare l'algoritmo Manhattan Mapper per generare una mappa.
+   Sotto requisiti:
+    01: Conoscenza base di Unity.
+
+ - Nome: Movimento Pac-Man
+   Priorita: 1
+   Note: Il giocatore puo usare la tastiera per muoversi dentro la mappa.
+   Sotto requisiti:
+    01: Una matrice su cui puo muoversi.
+
+ - Nome: Piazzamento Pillole
+   Priorita: 1
+   Note: Vengono piazzate le pillole e Super-Pillole, che aumentano il punteggio, in modo casuale dentro la mappa.
+   Sotto requisiti: 
+    01: Una matrice su cui piazzarle.
+
+ - Nome: AI Fantasma
+   Priorita: 1
+   Note: Usando l'algoritmo Manhattan Mapper l'AI viene piazzato sulla mappa per inseguire il giocatore.
+   Sotto requisiti:
+    01: Una matrice su cui puo muoversi.
+    02: La posizione del giocatore.
+
+ - Nome: Super-Pillole
+   Priorita: 1
+   Note: Quando Pac-Man consuma una Super-Pillola il fantasma scappa (Manhattan inverso) e se viene raggiunto inizia a fuggire più velocemente per un tempo parametrizzabile per poi rinascere e ritornare ad inseguire Pac-Man.
+   Sotto requisiti:
+    01: Le pillole sono piazzate.
+    02: Il giocatore riesce a consumarle.
+    03: Un'AI che segue il giocatore.
+
+ - Nome: Grafica
+   Priorita: 1
+   Note: Un'interfaccia con i bottoni per cominciare, uscire e ricominciare. Dettagli del gioco come le vite, il punteggio e l'Highscore che viene salvato in una variabile globale.
+   Sotto requisiti:
+    01: Le pillole sono piazzate.
+    02: Il giocatore riesce a consumarle.
+    03: Un'AI che segue il giocatore.
+
+ - Nome: Vittoria/Perdita/Ricomincia
+   Priorita: 1
+   Note: I diversi casi in cui una nuova mappa viene generata ed i personaggi vengono ripristinati: 
+          • Quando tutte le pillole e Super-Pillole sono consumate (Vittoria).
+          • Quando perdi tutte le tue vite per colpa del fantasma che ti colpisce (Perdita).
+          • Quando metti in pausa il gioco e clicchi ricomincia.
+   Sotto requisiti:
+    01: Le pillole sono piazzate.
+    02: Il giocatore riesce a consumarle.
+    03: Un'AI che segue il giocatore.
+    04: Pulsanti per ricominiciare la partita.
+__________
+          \
+Opzionali ||
+__________/
+
+ - Nome: Variabili del Gioco
+   Priorita: 2
+   Note: Prima di iniziare la partita, si potrà modificare delle variabili di gioco (Vite, tempo Super-Pillole, grandezza delle mappe, velocità del fantasma, ecc...).
+   Sotto requisiti:
+    01: Il gioco finito e funzionante.
+
+ - Nome: Difficolta'
+   Priorita: 2
+   Note: Si potrà scegliere il livello di difficoltà prima di iniziare la partita.
+   Sotto requisiti:
+    01: Il gioco finito e funzionante.
+    02: Si puo' cambiare le variabili del gioco facilmente.
+
+ - Nome: Seconda Grafica
+   Priorita: 3 
+   Note: Aggiungere una seconda grafica 3D più “realistica”. 
+   Sotto requisiti:
+    01: Il gioco finito e funzionante.
+
+ - Nome: Modalita' "Gambling"
+   Priorita: 3 
+   Note: Una modalita' di gioco in cui dopo ogni livello nella partita si può scegliere se si vuole salvare il punteggio oppure continuare con doppio punteggio e con la difficoltà alzata. E dopo quel livello chiede se vuoi triplo punteggio eccetera. Però se perdi durante uno dei livelli, perdi il tuo punteggio per sempre.
+   Sotto requisiti:
+    01: Il gioco finito e funzionante.
+    02: Si puo' cambiare le variabili del gioco facilmente.
+
