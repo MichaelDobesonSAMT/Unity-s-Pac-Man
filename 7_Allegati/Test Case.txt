@@ -1,0 +1,222 @@
+Test Case
+_______________________
+
+ - TC-001
+   Riferimento: 	REQ-01
+   Nome: 		Mappa Generata Casualmente
+   Descrizione: 	Si provera' a fare generare la mappa senza interruzioni tra il percorso.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Controllare che la mappa e' generata correttamente.
+   Risultati attesi: 	Dovrebbe essere possibile raggiungere tutti i punti della mappa casuale, senza punti irraggiungibile in cui le mura bloccano il passaggio.
+
+
+ - TC-002
+   Riferimento: 	REQ-02
+   Nome: 		Movimento Pac-Man
+   Descrizione: 	Si provera' a fare muovere Pac-Man usando dei tasti sulla tastiera.
+   Procedura:
+    			 1. Fare partire L'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+   Risultati attesi: 	Il Pac-Man si muove in 4 direzioni usando i tasti specificati precedentemente.
+
+
+ - TC-003
+   Riferimento: 	REQ-02
+   Nome: 		Movimento Pac-Man Attraverso il Labirinto
+   Descrizione: 	Si provera' a fare muovere Pac-Man dentro la mappa.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man e' un muro oppure oltre il bordo della mappa, allora Pac-Man ritornera' immediatamente al suo posto precedente.
+   Risultati attesi: 	Il Pac-Man si muove in 4 direzioni usando i tasti specificati precedentamente, pero' rimane sul suo posto se c'e' un muro o il bordo della mappa nella posizione in cui si vuole andare.
+
+
+ - TC-004
+   Riferimento: 	REQ-03
+   Nome: 		Piazzamento Pillole nella Mappa
+   Descrizione: 	Si provera' a piazzare le pillole nella mappa casuale.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Controllare che le pillole sono piazzate dentro la mappa e non sulle mura.
+   Risultati attesi: 	Le pillole dovrebbero apparire in tutti i punti vuoti, cioe' dentro la mappa e che non sono mura.
+
+
+ - TC-005
+   Riferimento: 	REQ-02, REQ-03
+   Nome: 		Consumazione delle pillole da Pac-Man
+   Descrizione: 	Le pillole possono essere consumate dal Pac-Man.
+   Procedura:
+    			 1. Fare Partire L'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una pillola, allora la pillola scomparira'.
+   Risultati attesi: 	Pac-Man riesce a muoversi e quando incontra una pillola lo consuma e quindi scompare.
+
+
+ - TC-006
+   Riferimento: 	REQ-04
+   Nome: 		Avvicinamento del Fantasma AI al Pac-Man Statico
+   Descrizione: 	Il fantasma si avvicina, blocco per blocco, al giocatore Pac-Man fermo.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Controllare che il fantasma si avvicina di un blocco ogni x secondi (variabile) al Pac-Man.
+   Risultati attesi: 	Il fantasma si avvicina al Pac-Man, che e' fermo, blocco per blocco ogni x secondi.
+
+
+ - TC-007
+   Riferimento: 	REQ-04
+   Nome: 		Avvicinamento del Fantasma AI al Pac-Man Dinamico
+   Descrizione: 	Il fantasma si avvicina, blocco per blocco, al giocatore Pac-Man che si muove.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+    			 4. Controllare che il fantasma si avvicina di un blocco ogni x secondi (variabile) al Pac-Man.
+   Risultati attesi: 	Il fantasma si avvicina al Pac-Man, che si sta spostando continuamente, blocco per blocco ogni x secondi.
+
+
+ - TC-008
+   Riferimento: 	REQ-04
+   Nome: 		Avvicinamento del Fantasma AI al Pac-Man nella Mappa
+   Descrizione: 	Il fantasma si avvicina, blocco per blocco, al giocatore Pac-Man che si muove attraverso il labirinto.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Controllare che il fantasma si avvicina di un blocco ogni x secondi (variabile) al Pac-Man senza uscire della mappa o scontrando le mura.
+   Risultati attesi: 	Il fantasma si avvicina al Pac-Man, che si sta spostando continuamente, blocco per blocco ogni x secondi percorrendo il labirinto (non esce dalla mappa e non va sulle mura).
+
+
+ - TC-009
+   Riferimento: 	REQ-05
+   Nome: 		Consumazione della Super-Pillola Invoca L'invicibilita'
+   Descrizione: 	Le Super-Pillole dopo che sono consumate dal Pac-Man gli danno l'invicibilta' contro il fantasma per x secondi (variabile).
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una Super-Pillola, allora Pac-Man avra' l'invicibilta' contro il fantasma per x secondi.
+   Risultati attesi: 	Pac-Man riesce a muoversi e quando incontra una Super-Pillola, lo consuma e ottiene l'invicibilta' contro il fantasma per x secondi.
+
+
+ - TC-010
+   Riferimento: 	REQ-05
+   Nome: 		Consumazione della Super-Pillola Vittimizza il Fantasma
+   Descrizione: 	Le Super-Pillole dopo che sono consumate dal Pac-Man fanno scappare il fantasma per x secondi (variabile).
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una Super-Pillola, allora Pac-Man sottomette il fantasma per x secondi.
+			 5. Controllare che il fantasma scappa senza scontrarsi contro le mura oppure uscendo dalla mappa.
+   Risultati attesi: 	Pac-Man riesce a muoversi e quando incontra una Super-Pillola, lo consuma e il fantasma scappa senza uscire dalla mappa o scontrandosi contro le mura per x secondi.
+
+
+ - TC-011
+   Riferimento: 	REQ-06
+   Nome: 		Conteggio Punteggio
+   Descrizione: 	Ogni volta che una pillola e' consumata si ottiene un punto che viene mostrato accanto.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una pillola, allora si ottiene un punto che viene mostrato accanto.
+   Risultati attesi: 	Pac-Man riesce a muoversi e quando incontra una pillola, lo consuma e ottiene un punto che viene mostrato accanto.
+
+
+ - TC-012
+   Riferimento: 	REQ-06
+   Nome: 		Salvataggio Punteggio
+   Descrizione: 	Ogni volta che una pillola e' consumata si ottiene un punto e alla fine della partita se il punteggio e' maggiore di quello precendente, allora viene salvato.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una pillola, allora si ottiene un punto che viene mostrato accanto.
+			 5. Devi essere eliminato dal fantasma, facendoti prendere finche non hai piu vite.
+   Risultati attesi: 	Viene salvato e mostrato il punteggio migliore del giocatore dopo che perde (Variabile globale – File di Unity).
+
+
+ - TC-013
+   Riferimento: 	REQ-07
+   Nome: 		Conseguenza della Vittoria
+   Descrizione: 	Quando tutte le pillole sono consumate, una nuova mappa viene generata ed i personaggi vengono ripristinati e il giocatore ottiene x vite (variabile).
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Se il blocco in cui ci sta Pac-Man ha una pillola, allora si ottiene un punto che viene mostrato accanto.
+			 5. Devi consumare tutte le pillole.
+   Risultati attesi: 	Una nuova mappa viene generata ed i personaggi vengono ripristinati e il giocatore ottiene x vite (variabile).
+
+
+ - TC-014
+   Riferimento: 	REQ-07
+   Nome: 		Conseguenza della Perdita
+   Descrizione: 	Ogni volta che Pac-Man viene toccato perde una vita, quando perde tutte le sue vite il gioco finisce.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Usare i diversi tasti seguenti per fare muovere il Pac-Man, in diverse direzioni, di un blocco sulla mappa:
+                          Tasto "w" o freccia in su: sposta in su.
+                          Tasto "a" o freccia a sinistra: sposta a sinistra.
+                          Tasto "s" o freccia in giu': sposta in giu'.
+                          Tasto "d" o freccia a destra: sposta a destra.
+			 4. Devi essere eliminato dal fantasma, facendoti prendere finche non hai piu vite.
+   Risultati attesi: 	Il gioco finisce e appare un bottone per ricominciare la partita oppure uscire dal gioco.
+
+
+ - TC-015
+   Riferimento: 	REQ-07
+   Nome: 		Mettere in Pausa
+   Descrizione: 	Cliccando un bottone mette in pausa il gioco.
+   Procedura:
+    			 1. Fare partire l'applicativo in Unity.
+			 2. Avviare una partita.
+    			 3. Cliccare il tasto "esc".
+			 4. Cliccare il pulsante "Retry".
+    			 5. Cliccare il tasto "esc" di nuovo.
+    			 5. Cliccare il pulsante "Exit".
+   Risultati attesi: 	In partita, cliccando un bottone mostra 2 pulsanti e mette in pausa la partita.
+
