@@ -1,0 +1,39 @@
+@startuml
+!pragma useVerticalIf on
+start
+#Gray:repeat :Menu;
+	switch(Menu Select)
+		case (Options)
+			#Gray:Change Settings;
+		case (Start)
+		case (Exit)
+			#Red:Quit Game;
+			stop
+	endswitch
+
+#LimeGreen:repeat :Start Game;
+	#LightBlue:Random Map Generated;
+	#LightBlue:Pellets Placed;
+	#Yellow:repeat :Pac-Man Position Reset;
+	#OrangeRed:Blinky Position Reset;
+		floating note: Blinky = Enemy Ghost
+	#OrangeRed:Blinky Follows Pac-Man;
+	switch(Player Choice)	
+		case (Options)
+			switch(Pause Menu Select)
+				case (Options)
+					#Gray:Change Settings;
+				case (Restart)
+					
+				case (Exit)
+					#Red:Quit Game;
+					stop
+			endswitch
+		case (Move Pac-Man)
+	endswitch
+
+
+
+
+stop
+@enduml
