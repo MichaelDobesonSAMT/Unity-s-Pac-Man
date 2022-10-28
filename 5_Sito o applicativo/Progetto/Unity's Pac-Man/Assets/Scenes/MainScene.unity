@@ -123,7 +123,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &745242818
+--- !u!1 &44580406
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -131,31 +131,31 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 745242821}
-  - component: {fileID: 745242820}
-  - component: {fileID: 745242819}
+  - component: {fileID: 44580409}
+  - component: {fileID: 44580408}
+  - component: {fileID: 44580407}
   m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
+  m_Name: MainCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &745242819
+--- !u!81 &44580407
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745242818}
+  m_GameObject: {fileID: 44580406}
   m_Enabled: 1
---- !u!20 &745242820
+--- !u!20 &44580408
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745242818}
+  m_GameObject: {fileID: 44580406}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
@@ -174,10 +174,10 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 12.5
-  m_Depth: -1
+  field of view: 160
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -192,22 +192,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &745242821
+--- !u!4 &44580409
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 745242818}
+  m_GameObject: {fileID: 44580406}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &858950345
+--- !u!1 &1797499749
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,80 +215,52 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 858950348}
-  - component: {fileID: 858950347}
-  - component: {fileID: 858950346}
-<<<<<<< HEAD
-  - component: {fileID: 858950349}
-=======
->>>>>>> 3253295145a8d95a78c8a4a7b75944b2a569ed80
+  - component: {fileID: 1797499750}
+  - component: {fileID: 1797499753}
+  - component: {fileID: 1797499752}
+  - component: {fileID: 1797499751}
   m_Layer: 0
-  m_Name: GameManager
+  m_Name: ObjectManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &858950346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858950345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c03f7d18a4d5eb4f985f242ac7bbaa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
---- !u!114 &858950347
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858950345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c30846619aee37941bcbc3e6edec848c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
-<<<<<<< HEAD
-  Vertical: 0
-  Horizontal: 0
-  Columns: 0
-  Rows: 0
-  WallPercent: 0.3
-  BlinkyFromPac: 10
-  BlinkySpeed: 0.5
-=======
-  WallPercent: 0.3
->>>>>>> 3253295145a8d95a78c8a4a7b75944b2a569ed80
---- !u!4 &858950348
+--- !u!4 &1797499750
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858950345}
+  m_GameObject: {fileID: 1797499749}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 1.1936133, y: 1.3235543, z: -0.17819345}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!114 &858950349
+--- !u!114 &1797499751
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 858950345}
+  m_GameObject: {fileID: 1797499749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c03f7d18a4d5eb4f985f242ac7bbaa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
+--- !u!114 &1797499752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797499749}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2908b2609fdb35f40842568561492b7b, type: 3}
@@ -296,5 +268,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sprite: {fileID: 21300000, guid: 7b9f574f1af29fb4f938ca9fbb949b68, type: 3}
   sprite2: {fileID: 21300000, guid: c9e7f251270feca4c83abcbf8e6da94d, type: 3}
-=======
->>>>>>> 3253295145a8d95a78c8a4a7b75944b2a569ed80
+--- !u!114 &1797499753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797499749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c30846619aee37941bcbc3e6edec848c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
+  Vertical: 0
+  Horizontal: 0
+  Columns: 0
+  Rows: 0
+  WallPercent: 0.3
+  BlinkyFromPac: 10
+  BlinkySpeed: 0.5
