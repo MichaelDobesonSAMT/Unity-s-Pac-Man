@@ -6,22 +6,23 @@ using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
-    public Sprite sprite;
     private GameObject blinky;
-    private int BlinkyX;
-    private int BlinkyY;
+    private int blinkyX;
+    private int blinkyY;
     private float timer;
-
-    private bool[,] GridWalls;
-    private float[,] Grid;
-    private int BlinkyFromPac;
-    private int Columns;
-    private int Rows;
-    private int Horizontal;
-    private int Vertical;
+    private bool[,] gridWalls;
+    private float[,] grid;
+    private int blinkyFromPac;
+    private int columns;
+    private int rows;
+    private int horizontal;
+    private int vertical;
     private int WALL;
     private float PAC_AURA;
-    private float BlinkySpeed;
+    private float blinkySpeed;
+
+    public Sprite Square;
+    public RuntimeAnimatorController BlinkyController;
 
     void Start()
     {
@@ -34,32 +35,45 @@ public class EnemyManager : MonoBehaviour
         MoveBlinky();
     }
 
+    // Finds Random Position for Blinky to Spawn
     private void SetBlinkyPosition()
     {
+        // Goes through all the Positions (from Preset Distance) to find one without a Wall
         do
         {
-            BlinkyX = UnityEngine.Random.Range(BlinkyFromPac, Columns - 1);
-            BlinkyY = UnityEngine.Random.Range(BlinkyFromPac, Rows - 1);
-        } while (GridWalls[BlinkyX, BlinkyY]);
-        SpawnBlinky(BlinkyX, BlinkyY);
+            blinkyX = UnityEngine.Random.Range(blinkyFromPac, columns - 1);
+            blinkyY = UnityEngine.Random.Range(blinkyFromPac, rows - 1);
+        } while (gridWalls[blinkyX, blinkyY]);
+        SpawnBlinky(blinkyX, blinkyY);
     }
 
+    // Places Blinky on the Map
     private void SpawnBlinky(int x, int y)
     {
         blinky = new GameObject("Blinky");
         blinky.transform.position = new Vector3(
-            x - (Horizontal - 0.5f), 
-            (Vertical - 0.5f) - y
+            x - (horizontal - 0.5f), 
+            (vertical - 0.5f) - y
         );
+        blinky.tag = "Blinky";
+
         var s = blinky.AddComponent<SpriteRenderer>();
-        s.sprite = sprite;
+        s.sprite = Square;
         s.color = Color.red;
         s.sortingOrder = 1;
+
+        var a = blinky.AddComponent<Animator>();
+        a.runtimeAnimatorController = BlinkyController;
     }
 
+    // Every x Blinky moves Closer to Pac-Man
     private void MoveBlinky()
     {
-        if(timer < BlinkySpeed)
+        // Get Updated Grid
+        grid = GetComponent<PacManManager>().Grid;
+
+        // If x time hasn't passed don't execute the Method
+        if (timer < blinkySpeed)
         {
             timer += Time.deltaTime;
             return;
@@ -68,11 +82,12 @@ public class EnemyManager : MonoBehaviour
         {
             timer = 0;
         }
+
         float north = WALL;
         float west = WALL;
         float south = WALL;
         float east = WALL;
-        float[,] ghostGrid = Grid;
+        float[,] ghostGrid = grid;
 
         /*
         if (isScared)
@@ -82,28 +97,28 @@ public class EnemyManager : MonoBehaviour
         */
 
         // Assign if the positions are in the field
-        if (BlinkyY > 0)
+        if (blinkyY > 0)
         {
-            north = ghostGrid[BlinkyX, BlinkyY - 1];
+            north = ghostGrid[blinkyX, blinkyY - 1];
         }
 
-        if (BlinkyX > 0)
+        if (blinkyX > 0)
         {
-            west = ghostGrid[BlinkyX - 1, BlinkyY];
+            west = ghostGrid[blinkyX - 1, blinkyY];
         }
 
-        if (BlinkyY < Rows - 1)
+        if (blinkyY < rows - 1)
         {
-            south = ghostGrid[BlinkyX, BlinkyY + 1];
+            south = ghostGrid[blinkyX, blinkyY + 1];
         }
 
-        if (BlinkyX < Columns - 1)
+        if (blinkyX < columns - 1)
         {
-            east = ghostGrid[BlinkyX + 1, BlinkyY];
+            east = ghostGrid[blinkyX + 1, blinkyY];
         }
 
         // Positions which are walls or invalid
-        var avoid = Columns * 1000;
+        var avoid = columns * 1000;
 
         if (north == WALL || north == PAC_AURA)
         {
@@ -138,7 +153,7 @@ public class EnemyManager : MonoBehaviour
                 blinkyImage = "img/blinkyUp.gif";
             }
             */
-            BlinkyY--;
+            blinkyY--;
         }
         else if (west <= north && west <= east && west <= south)
         {
@@ -152,7 +167,8 @@ public class EnemyManager : MonoBehaviour
                 blinkyImage = "img/blinkyLeft.gif";
             }
             */
-            BlinkyX--;
+            blinky.AddComponent<Animator>().SetTrigger("isLeft"); // <----------------------------
+            blinkyX--;
         }
         else if (east <= west && east <= north && east <= south)
         {
@@ -166,7 +182,7 @@ public class EnemyManager : MonoBehaviour
                 blinkyImage = "img/blinkyRight.gif";
             }
             */
-            BlinkyX++;
+            blinkyX++;
         }
         else
         {
@@ -180,7 +196,7 @@ public class EnemyManager : MonoBehaviour
                 blinkyImage = "img/blinkyDown.gif";
             }
             */
-            BlinkyY++;
+            blinkyY++;
         }
 
         /*
@@ -192,8 +208,8 @@ public class EnemyManager : MonoBehaviour
         */
 
         blinky.transform.position = new Vector3(
-            BlinkyX - (Horizontal - 0.5f),
-            (Vertical - 0.5f) - BlinkyY
+            blinkyX - (horizontal - 0.5f),
+            (vertical - 0.5f) - blinkyY
         );
 
         // Pac goes in contact with blinky
@@ -206,18 +222,19 @@ public class EnemyManager : MonoBehaviour
         
     }
 
+    // Imports necessary Variables from Grid Manager
     public void GetGridVariables()
     {
         var g = GetComponent<GridManager>();
-        GridWalls = g.GridWalls;
-        Grid = g.Grid;
-        BlinkyFromPac = g.BlinkyFromPac;
-        Columns = g.Columns;
-        Rows = g.Rows;
-        Horizontal = g.Horizontal;
-        Vertical = g.Vertical;
+        gridWalls = g.GridWalls;
+        grid = g.Grid;
+        blinkyFromPac = g.BlinkyFromPac;
+        columns = g.Columns;
+        rows = g.Rows;
+        horizontal = g.Horizontal;
+        vertical = g.Vertical;
         WALL = GridManager.WALL;
         PAC_AURA = GridManager.PAC_AURA;
-        BlinkySpeed = g.BlinkySpeed;
+        blinkySpeed = g.BlinkySpeed;
     }
 }

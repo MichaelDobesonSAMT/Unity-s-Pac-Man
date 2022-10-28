@@ -5,28 +5,32 @@ using UnityEngine.UI;
 
 public class PacManManager : MonoBehaviour
 {
-
-    private float x = 0 ;
-    private float y = 0;
-
-    public Sprite sprite;
-    public Sprite sprite2;
-    GameObject pacman;
+    private GameObject pacman;
+    private int x = 0;
+    private int y = 0;
     private int col;
     private int row;
-    private float timer = 0;
+    private int WALL;
+    private float timeLeft = 0;
+    private float pacManSpeed;
+
+    public Sprite PacManSprite;
+    public Sprite PacManSprite2;
+    public float[,] Grid;
 
     public void getGridVariables()
     {
         var g = GetComponent<GridManager>();
         col = g.Columns;
         row = g.Rows;
-        print(row);
+        Grid = g.Grid;
+        pacManSpeed = g.PacManSpeed;
+        WALL = GridManager.WALL;
     }
     void Start()
     {
         getGridVariables();
-        spawnPacMan();
+        SpawnPacMan();
     }
 
     void Update()
@@ -34,55 +38,116 @@ public class PacManManager : MonoBehaviour
         CheckPacManMovement();
     }
 
+    //makes PacMan move
     private void CheckPacManMovement()
     {
-        
+        pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
 
-        pacman.GetComponent<SpriteRenderer>().sprite = sprite2;
-        if (Input.GetKeyDown(KeyCode.S) && y < row - 1)
+        // Makes Timer go Down and when Wait Time is Over lets Pac-Man move Again
+        timeLeft -= Time.deltaTime;
+        if (timeLeft < 0)
         {
-            y++;
-        }
-        else if (Input.GetKeyDown(KeyCode.D) && x < col - 1)
-        {
-            x++;
-        }
-        else if (Input.GetKeyDown(KeyCode.W) && y > 0)
-        {
-            if (timer < 0.5f)
+            // Check what Key is pressed and Check if the Movement makes Pac-Man go Out of the Borders
+            if (Input.GetKey(KeyCode.S) && y < row - 1)
             {
-                timer += Time.deltaTime;
-                return;
+                if (CheckIfNotWall((int)x, (int)y + 1))
+                {
+                    y++;
+                    pacman.transform.eulerAngles = Vector3.forward * -90;
+                    pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
+                }
             }
-            else
+            else if (Input.GetKey(KeyCode.D) && x < col - 1)
             {
-                timer = 0;
+                if (CheckIfNotWall((int)x + 1, (int)y))
+                {
+                    x++;
+                    pacman.transform.eulerAngles = Vector3.forward;
+                    pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
+                }
             }
-            y--;
+            else if (Input.GetKey(KeyCode.W) && y > 0)
+            {
+                if (CheckIfNotWall((int)x, (int)y - 1))
+                {
+                    y--;
+                    pacman.transform.eulerAngles = Vector3.forward * 90;
+                    pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
+                }
+            }
+            else if (Input.GetKey(KeyCode.A) && x > 0)
+            {
+                if (CheckIfNotWall((int)x - 1, (int)y))
+                {
+                    x--;
+                    pacman.transform.eulerAngles = Vector3.forward * 180;
+                    pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
+                }
+            }
+
+            // Reset Eait Time
+            timeLeft = pacManSpeed;
+
+            // Set Pac-Man Position
+            pacman.transform.position = new Vector3(
+                x - (col / 2 - 0.5f),
+                (row / 2 - 0.5f) - y);
+
+            // Do All Checks
+            CheckPacManEatsPill(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
+            CheckPacManEncountersBlinky(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
+
+            // Update the Grid (for the AI)
+            Grid = GetComponent<GridManager>().SetGrid(x, y);
         }
-        if (Input.GetKeyDown(KeyCode.A) && x > 0)
+        // Once Half of the Wait Time is Over Changes Sprite
+        if (timeLeft < pacManSpeed / 2)
         {
-            x--;
+            pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite;
         }
-
-        // pacman.transform.position = Vector3.forward * -90;
-        //var s = pacman.AddComponent<SpriteRenderer>();
-        //s.sprite = sprite;
-        pacman.GetComponent<SpriteRenderer>().sprite = sprite;
-        pacman.transform.position = new Vector3(
-            x - (col / 2 - 0.5f),
-            (row / 2 - 0.5f) - y);
-
     }
 
-    public void spawnPacMan()
+    // Check if the Next Space on the Map is a Wall
+    public bool CheckIfNotWall(int gridX, int gridY)
+    {
+        return (Grid[gridX, gridY] != WALL);
+    }
+
+    public void SpawnPacMan()
     {
         pacman = new GameObject("Pac-Man");
         pacman.transform.position = new Vector3(
             x - (col / 2 - 0.5f),
             (row / 2 - 0.5f) - y);
         var s = pacman.AddComponent<SpriteRenderer>();
-        s.sprite = sprite;
+        s.sprite = PacManSprite;
         s.sortingOrder = 1;
+        timeLeft = 1;
+    }
+
+    // Check if Pac-Man is on a Pill and Delete said Pill
+    public void CheckPacManEatsPill(float pacX, float pacY)
+    {
+        var pills = GameObject.FindGameObjectsWithTag("Pill");
+        foreach(var obj in pills)
+        {
+            float pillX = obj.transform.position.x;
+            float pillY = obj.transform.position.y;
+            if(pacX == pillX && pacY == pillY)
+            {
+                Destroy(obj);
+            }
+        }
+    }
+
+    public void CheckPacManEncountersBlinky(float pacX, float pacY)
+    {
+        var blinky = GameObject.FindGameObjectWithTag("Blinky");
+        float blinkyX = blinky.transform.position.x;
+        float blinkyY = blinky.transform.position.y;
+        if(pacX == blinkyX && pacY == blinkyY)
+        {
+            Destroy(pacman);
+        }
     }
 }
