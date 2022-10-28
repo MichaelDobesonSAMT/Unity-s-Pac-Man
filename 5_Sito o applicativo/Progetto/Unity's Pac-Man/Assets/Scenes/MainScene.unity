@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 1797499753}
   - component: {fileID: 1797499752}
   - component: {fileID: 1797499751}
+  - component: {fileID: 1797499754}
   m_Layer: 0
   m_Name: ObjectManager
   m_TagString: Untagged
@@ -286,5 +287,22 @@ MonoBehaviour:
   Columns: 0
   Rows: 0
   WallPercent: 0.3
+  SuperPillPercent: 0.25
   BlinkyFromPac: 10
   BlinkySpeed: 0.5
+  PacManSpeed: 0.25
+--- !u!114 &1797499754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1797499749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7b5a82cd9ce1844dbab1f1f22f24956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sprite: {fileID: -2413806693520163455, guid: 8f59eba101f393c4cb147ffa351c5f96, type: 3}
+  pillSize: 0.15
+  superPillSize: 0.5

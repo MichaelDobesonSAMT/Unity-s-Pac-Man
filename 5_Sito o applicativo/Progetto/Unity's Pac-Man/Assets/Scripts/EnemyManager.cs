@@ -12,6 +12,7 @@ public class EnemyManager : MonoBehaviour
     private int BlinkyY;
     private float timer;
 
+    // Variables imported from GridManager
     private bool[,] GridWalls;
     private float[,] Grid;
     private int BlinkyFromPac;
@@ -34,6 +35,7 @@ public class EnemyManager : MonoBehaviour
         MoveBlinky();
     }
 
+    // Finds Random Position for Blinky to Spawn
     private void SetBlinkyPosition()
     {
         do
@@ -44,6 +46,7 @@ public class EnemyManager : MonoBehaviour
         SpawnBlinky(BlinkyX, BlinkyY);
     }
 
+    // Places Blinky on the Map
     private void SpawnBlinky(int x, int y)
     {
         blinky = new GameObject("Blinky");
@@ -57,9 +60,11 @@ public class EnemyManager : MonoBehaviour
         s.sortingOrder = 1;
     }
 
+    // Every x Blinky moves Closer to Pac-Man
     private void MoveBlinky()
     {
-        if(timer < BlinkySpeed)
+        Grid = GetComponent<PacManManager>().Grid;
+        if (timer < BlinkySpeed)
         {
             timer += Time.deltaTime;
             return;
@@ -206,6 +211,7 @@ public class EnemyManager : MonoBehaviour
         
     }
 
+    // Imports necessary Variables from Grid Manager
     public void GetGridVariables()
     {
         var g = GetComponent<GridManager>();

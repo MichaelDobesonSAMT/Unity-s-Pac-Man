@@ -17,14 +17,16 @@ public class GridManager : MonoBehaviour
     [HideInInspector]
     public int Vertical, Horizontal, Columns, Rows;
 
+    // Game Setting Variables
     public float WallPercent = 0.3f;
+    public float SuperPillPercent = 0.25f;
     public int BlinkyFromPac = 10;
     public float BlinkySpeed = 0.5f;
+    public float PacManSpeed = 0.25f;
 
     void Start()
     {
         // Set Sizes
-        //Horizontal = Vertical = (int)Camera.main.orthographicSize * 2;
         Horizontal = Vertical = 10;
         Columns = Rows = Horizontal * 2;
         Grid = new float[Columns, Rows];
@@ -46,7 +48,7 @@ public class GridManager : MonoBehaviour
                 if (rnd < WallPercent)
                 {
                     GridWalls[i, j] = true;
-                    SetGrid();
+                    SetGrid(0,0);
                     for (int k = 0; k < Columns; k++)
                     {
                         for (int l = 0; l < Rows; l++)
@@ -67,7 +69,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Set Grid Values
-    public void SetGrid()
+    public float[,] SetGrid(int x, int y)
     {
         Grid = new float[Columns, Rows];
 
@@ -85,7 +87,8 @@ public class GridManager : MonoBehaviour
                 }
             }
         }
-        Visit(Grid, 0, 0, 0);
+        Visit(Grid, x, y, 0);
+        return Grid;
     }
 
     // Manhattan Distance Algorithm
@@ -110,7 +113,7 @@ public class GridManager : MonoBehaviour
     // Spawns an Element of the Map
     private void SpawnTile(int x, int y, float value, Transform parent)
     {
-        GameObject g = new GameObject("x: " + x + ",y: " + y);
+        GameObject g = new GameObject("Tile - x: " + x + ",y: " + y);
         g.transform.parent = parent;
         g.transform.position = new Vector3(x - (Horizontal - 0.5f), (Vertical - 0.5f) - y);
         var s = g.AddComponent<SpriteRenderer>();
