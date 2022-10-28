@@ -4,7 +4,11 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences: []
+<<<<<<< HEAD
   executionOrder: 200
+=======
+  executionOrder: 0
+>>>>>>> 3253295145a8d95a78c8a4a7b75944b2a569ed80
   icon: {instanceID: 0}
   userData: 
   assetBundleName: 

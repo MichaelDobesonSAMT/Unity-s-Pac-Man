@@ -14,7 +14,7 @@ public class GridManager : MonoBehaviour
     public float[,] Grid;
     public bool[,] GridWalls;
 
-    [HideInInspector] 
+    [HideInInspector]
     public int Vertical, Horizontal, Columns, Rows;
 
     public float WallPercent = 0.3f;
@@ -67,15 +67,21 @@ public class GridManager : MonoBehaviour
     }
 
     // Set Grid Values
-    public void SetGrid(){
+    public void SetGrid()
+    {
         Grid = new float[Columns, Rows];
 
-        for (int i = 0; i < Columns; i++) {
-            for (int j = 0; j < Rows; j++) {
-                if(GridWalls[i,j]){
-                    Grid[i,j] = WALL;
-                }else{
-                    Grid[i,j] = INVALID;
+        for (int i = 0; i < Columns; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                if (GridWalls[i, j])
+                {
+                    Grid[i, j] = WALL;
+                }
+                else
+                {
+                    Grid[i, j] = INVALID;
                 }
             }
         }
@@ -83,17 +89,20 @@ public class GridManager : MonoBehaviour
     }
 
     // Manhattan Distance Algorithm
-    public void Visit(float[,] tempGrid, int col, int row, int dist){
-        if(row < Rows && row >= 0 && col < Columns && col >= 0){
-            if(
-                (tempGrid[col,row] > dist && tempGrid[col,row] != WALL) || 
-                tempGrid[col,row] == INVALID
-            ){
-                tempGrid[col,row] = dist;
-                Visit(tempGrid, col, row-1,dist+1);
-                Visit(tempGrid, col-1, row, dist+1);
-                Visit(tempGrid, col, row+1,dist+1);
-                Visit(tempGrid, col+1, row, dist+1);
+    public void Visit(float[,] tempGrid, int col, int row, int dist)
+    {
+        if (row < Rows && row >= 0 && col < Columns && col >= 0)
+        {
+            if (
+                (tempGrid[col, row] > dist && tempGrid[col, row] != WALL) ||
+                tempGrid[col, row] == INVALID
+            )
+            {
+                tempGrid[col, row] = dist;
+                Visit(tempGrid, col, row - 1, dist + 1);
+                Visit(tempGrid, col - 1, row, dist + 1);
+                Visit(tempGrid, col, row + 1, dist + 1);
+                Visit(tempGrid, col + 1, row, dist + 1);
             }
         }
     }
@@ -103,12 +112,15 @@ public class GridManager : MonoBehaviour
     {
         GameObject g = new GameObject("x: " + x + ",y: " + y);
         g.transform.parent = parent;
-        g.transform.position = new Vector3(x - (Horizontal - 0.5f),  (Vertical - 0.5f) - y);
+        g.transform.position = new Vector3(x - (Horizontal - 0.5f), (Vertical - 0.5f) - y);
         var s = g.AddComponent<SpriteRenderer>();
         s.sprite = sprite;
-        if(Grid[x,y] == WALL){
+        if (Grid[x, y] == WALL)
+        {
             s.color = new Color(0, 0, 255);
-        }else{
+        }
+        else
+        {
             s.color = new Color(0, 0, 0);
         }
 
