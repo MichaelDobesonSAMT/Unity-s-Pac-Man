@@ -13,6 +13,7 @@ public class PacManManager : MonoBehaviour
     private int WALL;
     private float timeLeft = 0;
     private float pacManSpeed;
+    private int pacManLives;
 
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
@@ -26,6 +27,7 @@ public class PacManManager : MonoBehaviour
         Grid = g.Grid;
         pacManSpeed = g.PacManSpeed;
         WALL = GridManager.WALL;
+        pacManLives = g.PacManLives;
     }
     void Start()
     {
@@ -35,7 +37,28 @@ public class PacManManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && x > 0)
+        {
+            PauseGame();
+        }
         CheckPacManMovement();
+    }
+
+    public void PauseGame()
+    {
+        if (Time.timeScale == 0f)
+        {
+            Time.timeScale = 1;
+        }
+        else
+        {
+            Time.timeScale = 0f;
+        }
+    }
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
+        GetComponent<GridManager>().gameOver.gameObject.SetActive(false);
     }
 
     //makes PacMan move
@@ -135,6 +158,7 @@ public class PacManManager : MonoBehaviour
             float pillY = obj.transform.position.y;
             if(pacX == pillX && pacY == pillY)
             {
+                GetComponent<GridManager>().PacManPoints++;
                 Destroy(obj);
             }
         }
@@ -147,7 +171,17 @@ public class PacManManager : MonoBehaviour
         float blinkyY = blinky.transform.position.y;
         if(pacX == blinkyX && pacY == blinkyY)
         {
-            Destroy(pacman);
+            if (pacManLives > 0)
+            {
+                pacManLives--;
+                x = 0;
+                y = 0;
+                GetComponent<EnemyManager>().BlinkyResetPosition();
+                GetComponent<GridManager>().PacManLives = pacManLives;
+            }
+            else {
+                GameOver();
+            }
         }
     }
 }

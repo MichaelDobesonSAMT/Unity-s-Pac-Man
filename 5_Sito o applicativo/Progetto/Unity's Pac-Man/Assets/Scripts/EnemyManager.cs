@@ -51,10 +51,7 @@ public class EnemyManager : MonoBehaviour
     private void SpawnBlinky(int x, int y)
     {
         blinky = new GameObject("Blinky");
-        blinky.transform.position = new Vector3(
-            x - (horizontal - 0.5f), 
-            (vertical - 0.5f) - y
-        );
+        setPosition(x, y);
         blinky.tag = "Blinky";
 
         var s = blinky.AddComponent<SpriteRenderer>();
@@ -64,6 +61,24 @@ public class EnemyManager : MonoBehaviour
 
         var a = blinky.AddComponent<Animator>();
         a.runtimeAnimatorController = BlinkyController;
+    }
+
+    private void setPosition(int x, int y)
+    {
+        blinky.transform.position = new Vector3(
+            x - (horizontal - 0.5f),
+            (vertical - 0.5f) - y
+        );
+    }
+
+    public void BlinkyResetPosition()
+    {
+        do
+        {
+            blinkyX = UnityEngine.Random.Range(blinkyFromPac, columns - 1);
+            blinkyY = UnityEngine.Random.Range(blinkyFromPac, rows - 1);
+        } while (gridWalls[blinkyX, blinkyY]);
+        setPosition(blinkyX, blinkyY);
     }
 
     // Every x Blinky moves Closer to Pac-Man
@@ -167,7 +182,7 @@ public class EnemyManager : MonoBehaviour
                 blinkyImage = "img/blinkyLeft.gif";
             }
             */
-            blinky.AddComponent<Animator>().SetTrigger("isLeft"); // <----------------------------
+            blinky.GetComponent<Animator>().SetTrigger("isLeft"); // <----------------------------
             blinkyX--;
         }
         else if (east <= west && east <= north && east <= south)

@@ -283,6 +283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30846619aee37941bcbc3e6edec848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  retro: {fileID: 12800000, guid: 3be2f8b893723754c8b1a011b5ce556b, type: 3}
   sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
   Vertical: 0
   Horizontal: 0
@@ -291,8 +292,11 @@ MonoBehaviour:
   WallPercent: 0.3
   SuperPillPercent: 0.25
   BlinkyFromPac: 10
+  PacManLives: 3
+  PacManPoints: 0
   BlinkySpeed: 0.5
   PacManSpeed: 0.25
+  HighScore: 100
 --- !u!114 &1797499754
 MonoBehaviour:
   m_ObjectHideFlags: 0

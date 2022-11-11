@@ -10,6 +10,12 @@ public class GridManager : MonoBehaviour
     public const int WALL = -2;
     public const int BLINKY = -3;
 
+    private TextMesh score;
+    private TextMesh lives;
+    private TextMesh highScore;
+    public TextMesh gameOver;
+    public Font retro;
+
     public Sprite sprite;
     public float[,] Grid;
     public bool[,] GridWalls;
@@ -21,8 +27,11 @@ public class GridManager : MonoBehaviour
     public float WallPercent = 0.3f;
     public float SuperPillPercent = 0.25f;
     public int BlinkyFromPac = 10;
+    public int PacManLives = 1;
+    public int PacManPoints = 0;
     public float BlinkySpeed = 0.5f;
     public float PacManSpeed = 0.25f;
+    public int HighScore = 100;
 
     void Start()
     {
@@ -35,9 +44,40 @@ public class GridManager : MonoBehaviour
         PlaceWalls();
 
         PlaceGrid();
+
+        PlaceText();
+    }
+
+    void Update()
+    {
+        if (PacManPoints > HighScore)
+        {
+            HighScore = PacManPoints;
+        }
+        score.text = "Score: " + PacManPoints.ToString();
+        lives.text = "Lives: " + PacManLives.ToString();
+        highScore.text = "High Score: " + HighScore.ToString();
     }
 
     // Place Walls in Grid
+
+    private void PlaceText()
+    {
+        lives.text = PacManLives.ToString();
+        score.text = "0";
+        highScore.text = "High Score: " + HighScore.ToString();
+        highScore.text = "Game Over";
+        //lives.font = retro;
+        //score.font = retro;
+        //highScore.font = retro;
+
+        lives.transform.position = new Vector3(-10, 12);
+        score.transform.position = new Vector3(7, 12);
+        highScore.transform.position = new Vector3(-4, 12);
+        gameOver.transform.position = new Vector3(0, 0);
+        gameOver.gameObject.SetActive(false);
+    }
+
     private void PlaceWalls()
     {
         for (int i = 0; i < Columns; i++)
@@ -147,6 +187,10 @@ public class GridManager : MonoBehaviour
                 SpawnTile(i, j, Grid[i, j], parent.transform);
             }
         }
+
+        lives = CreateText(parent.transform);
+        score = CreateText(parent.transform);
+        highScore = CreateText(parent.transform);
     }
 
     // Adds Text to a Game Object
