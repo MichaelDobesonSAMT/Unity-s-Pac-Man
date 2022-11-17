@@ -10,16 +10,17 @@ public class GridManager : MonoBehaviour
     public const int WALL = -2;
     public const int BLINKY = -3;
 
+    public Sprite sprite;
+    public TextMesh gameOver;
+    public Font retro;
+    public float[,] Grid;
+    public bool[,] GridWalls;
+    public int PacManPoints = 0;
+    public int HighScore = 100;
+
     private TextMesh score;
     private TextMesh lives;
     private TextMesh highScore;
-    public TextMesh gameOver;
-    public Font retro;
-
-    public Sprite sprite;
-    public float[,] Grid;
-    public bool[,] GridWalls;
-
     [HideInInspector]
     public int Vertical, Horizontal, Columns, Rows;
 
@@ -28,11 +29,10 @@ public class GridManager : MonoBehaviour
     public float SuperPillPercent = 0.25f;
     public int BlinkyFromPac = 10;
     public int PacManLives = 1;
-    public int PacManPoints = 0;
     public float BlinkySpeed = 0.5f;
     public float PacManSpeed = 0.25f;
-    public int HighScore = 100;
 
+    // Start is called before the first frame update
     void Start()
     {
         // Set Sizes
@@ -44,22 +44,15 @@ public class GridManager : MonoBehaviour
         PlaceWalls();
 
         PlaceGrid();
-
+        
         PlaceText();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (PacManPoints > HighScore)
-        {
-            HighScore = PacManPoints;
-        }
-        score.text = "Score: " + PacManPoints.ToString();
-        lives.text = "Lives: " + PacManLives.ToString();
-        highScore.text = "High Score: " + HighScore.ToString();
-    }
 
-    // Place Walls in Grid
+    }
 
     private void PlaceText()
     {
@@ -78,6 +71,7 @@ public class GridManager : MonoBehaviour
         gameOver.gameObject.SetActive(false);
     }
 
+    // Place Walls in Grid
     private void PlaceWalls()
     {
         for (int i = 0; i < Columns; i++)

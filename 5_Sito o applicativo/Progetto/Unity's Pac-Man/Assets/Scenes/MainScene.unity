@@ -255,7 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c03f7d18a4d5eb4f985f242ac7bbaa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Square: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
+  blinkyPrefab: {fileID: 6759342018958808043, guid: 1995f3b31916a414c95fff1d628e6b0e, type: 3}
+  sprite: {fileID: 21300000, guid: e8ddc51e264afaf4a8e06b8d50fda42c, type: 3}
   BlinkyController: {fileID: 9100000, guid: 03cd4f3686447a2418c51f224e8b5843, type: 2}
 --- !u!114 &1797499752
 MonoBehaviour:
@@ -283,7 +284,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30846619aee37941bcbc3e6edec848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  retro: {fileID: 12800000, guid: 3be2f8b893723754c8b1a011b5ce556b, type: 3}
   sprite: {fileID: 7482667652216324306, guid: 0615072bf874e624cb636b49cd50b0bd, type: 3}
   Vertical: 0
   Horizontal: 0
@@ -292,11 +292,8 @@ MonoBehaviour:
   WallPercent: 0.3
   SuperPillPercent: 0.25
   BlinkyFromPac: 10
-  PacManLives: 3
-  PacManPoints: 0
   BlinkySpeed: 0.5
   PacManSpeed: 0.25
-  HighScore: 100
 --- !u!114 &1797499754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,7 +319,7 @@ Animator:
   m_GameObject: {fileID: 1797499749}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 03cd4f3686447a2418c51f224e8b5843, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

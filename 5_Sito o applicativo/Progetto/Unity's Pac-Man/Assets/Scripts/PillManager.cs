@@ -15,13 +15,14 @@ public class PillManager : MonoBehaviour
     public float PillSize = 0.15f;
     public float SuperPillSize = 0.5f;
 
+    // Start is called before the first frame update
     void Start()
     {
         GetGridVariables();
         PlacePills();
     }
 
-    
+    // Update is called once per frame
     void Update()
     {
         

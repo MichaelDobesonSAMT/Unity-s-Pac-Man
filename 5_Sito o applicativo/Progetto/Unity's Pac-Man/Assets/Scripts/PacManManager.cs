@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PacManManager : MonoBehaviour
 {
+    // Private variables
     private GameObject pacman;
     private int x = 0;
     private int y = 0;
@@ -14,11 +15,14 @@ public class PacManManager : MonoBehaviour
     private float timeLeft = 0;
     private float pacManSpeed;
     private int pacManLives;
+    private int pacManPoints;
 
+    // Public variables
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
     public float[,] Grid;
 
+    // Imports necessary variables from grid manager
     public void getGridVariables()
     {
         var g = GetComponent<GridManager>();
@@ -28,22 +32,28 @@ public class PacManManager : MonoBehaviour
         pacManSpeed = g.PacManSpeed;
         WALL = GridManager.WALL;
         pacManLives = g.PacManLives;
+        pacManPoints = g.PacManPoints;
     }
+    
+    // Start is called before the first frame update
     void Start()
     {
         getGridVariables();
         SpawnPacMan();
     }
 
+    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && x > 0)
+        // If the ESC key is pressed pause the game
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseGame();
         }
-        CheckPacManMovement();
+        MovePacMan();
     }
 
+    // Un/Pauses the game by un/freezing all objects
     public void PauseGame()
     {
         if (Time.timeScale == 0f)
@@ -55,22 +65,25 @@ public class PacManManager : MonoBehaviour
             Time.timeScale = 0f;
         }
     }
+
+    // Stops the game
     public void GameOver()
     {
         Time.timeScale = 0f;
         GetComponent<GridManager>().gameOver.gameObject.SetActive(false);
     }
 
-    //makes PacMan move
-    private void CheckPacManMovement()
+    // makes Pac-Man move
+    private void MovePacMan()
     {
+
         pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
 
-        // Makes Timer go Down and when Wait Time is Over lets Pac-Man move Again
+        // Makes timer go down and when the wait time is over lets Pac-Man move again
         timeLeft -= Time.deltaTime;
         if (timeLeft < 0)
         {
-            // Check what Key is pressed and Check if the Movement makes Pac-Man go Out of the Borders
+            // Check what key is pressed and checks if the movement makes Pac-Man go out of the borders
             if (Input.GetKey(KeyCode.S) && y < row - 1)
             {
                 if (CheckIfNotWall((int)x, (int)y + 1))
@@ -108,34 +121,35 @@ public class PacManManager : MonoBehaviour
                 }
             }
 
-            // Reset Eait Time
+            // Reset wait time
             timeLeft = pacManSpeed;
 
-            // Set Pac-Man Position
+            // Set Pac-Man position
             pacman.transform.position = new Vector3(
                 x - (col / 2 - 0.5f),
                 (row / 2 - 0.5f) - y);
 
-            // Do All Checks
+            // Do all checks
             CheckPacManEatsPill(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
             CheckPacManEncountersBlinky(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
 
             // Update the Grid (for the AI)
             Grid = GetComponent<GridManager>().SetGrid(x, y);
         }
-        // Once Half of the Wait Time is Over Changes Sprite
+        // Once half of the wait time is over the sprite is changed
         if (timeLeft < pacManSpeed / 2)
         {
             pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite;
         }
     }
 
-    // Check if the Next Space on the Map is a Wall
+    // Check if the next space on the map is a wall
     public bool CheckIfNotWall(int gridX, int gridY)
     {
         return (Grid[gridX, gridY] != WALL);
     }
 
+    // Creates the Pac-Man and places him on the grid
     public void SpawnPacMan()
     {
         pacman = new GameObject("Pac-Man");
@@ -148,7 +162,7 @@ public class PacManManager : MonoBehaviour
         timeLeft = 1;
     }
 
-    // Check if Pac-Man is on a Pill and Delete said Pill
+    // Checks if Pac-Man is on a pill, deletes said pill and increases points
     public void CheckPacManEatsPill(float pacX, float pacY)
     {
         var pills = GameObject.FindGameObjectsWithTag("Pill");
@@ -158,12 +172,14 @@ public class PacManManager : MonoBehaviour
             float pillY = obj.transform.position.y;
             if(pacX == pillX && pacY == pillY)
             {
-                GetComponent<GridManager>().PacManPoints++;
+                //GetComponent<GridManager>().PacManPoints++; <---------- if points arent working change back to this
+                pacManPoints++;
                 Destroy(obj);
             }
         }
     }
 
+    // Checks if Pac-Man is on the same position as Blinky
     public void CheckPacManEncountersBlinky(float pacX, float pacY)
     {
         var blinky = GameObject.FindGameObjectWithTag("Blinky");
@@ -171,12 +187,13 @@ public class PacManManager : MonoBehaviour
         float blinkyY = blinky.transform.position.y;
         if(pacX == blinkyX && pacY == blinkyY)
         {
+            // If Pac-Man still has live reset position otherwise Game Over
             if (pacManLives > 0)
             {
                 pacManLives--;
                 x = 0;
                 y = 0;
-                GetComponent<EnemyManager>().BlinkyResetPosition();
+                GetComponent<EnemyManager>().ResetBlinkyPosition();
                 GetComponent<GridManager>().PacManLives = pacManLives;
             }
             else {
