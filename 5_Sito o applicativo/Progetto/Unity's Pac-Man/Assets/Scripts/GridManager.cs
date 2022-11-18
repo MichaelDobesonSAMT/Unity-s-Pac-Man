@@ -15,10 +15,10 @@ public class GridManager : MonoBehaviour
     public Font retro;
     public float[,] Grid;
     public bool[,] GridWalls;
-    public int PacManPoints = 0;
+    public int Points = 0;
     public int HighScore = 100;
 
-    private TextMesh score;
+    private TextMesh points;
     private TextMesh lives;
     private TextMesh highScore;
     [HideInInspector]
@@ -28,7 +28,7 @@ public class GridManager : MonoBehaviour
     public float WallPercent = 0.3f;
     public float SuperPillPercent = 0.25f;
     public int BlinkyFromPac = 10;
-    public int PacManLives = 1;
+    public int Lives = 1;
     public float BlinkySpeed = 0.5f;
     public float PacManSpeed = 0.25f;
 
@@ -51,24 +51,31 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        UpdateText();
     }
 
     private void PlaceText()
     {
-        lives.text = PacManLives.ToString();
-        score.text = "0";
+        lives.text = Lives.ToString();
+        points.text = "0";
         highScore.text = "High Score: " + HighScore.ToString();
-        highScore.text = "Game Over";
+
         //lives.font = retro;
         //score.font = retro;
         //highScore.font = retro;
 
         lives.transform.position = new Vector3(-10, 12);
-        score.transform.position = new Vector3(7, 12);
+        points.transform.position = new Vector3(7, 12);
         highScore.transform.position = new Vector3(-4, 12);
         gameOver.transform.position = new Vector3(0, 0);
         gameOver.gameObject.SetActive(false);
+    }
+
+    private void UpdateText()
+    {
+        lives.text = "Lives: " + Lives.ToString();
+        points.text = "Score: " + Points.ToString();
+        highScore.text = "High Score: " + HighScore.ToString();
     }
 
     // Place Walls in Grid
@@ -183,7 +190,7 @@ public class GridManager : MonoBehaviour
         }
 
         lives = CreateText(parent.transform);
-        score = CreateText(parent.transform);
+        points = CreateText(parent.transform);
         highScore = CreateText(parent.transform);
     }
 

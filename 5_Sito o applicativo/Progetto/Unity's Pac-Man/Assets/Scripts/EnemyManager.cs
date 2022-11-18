@@ -60,7 +60,7 @@ public class EnemyManager : MonoBehaviour
     }
 
     // Finds Random Position for Blinky to Spawn
-    private void ResetBlinkyPosition()
+    public void ResetBlinkyPosition()
     {
         // Goes through all the Positions (from Preset Distance) to find one without a Wall
         do

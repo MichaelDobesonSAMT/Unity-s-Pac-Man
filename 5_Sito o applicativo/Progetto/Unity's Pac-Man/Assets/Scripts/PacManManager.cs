@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PacManManager : MonoBehaviour
@@ -15,11 +16,13 @@ public class PacManManager : MonoBehaviour
     private float timeLeft = 0;
     private float pacManSpeed;
     private int pacManLives;
-    private int pacManPoints;
 
     // Public variables
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
+    public Button ResumeButton;
+    public Button MenuButton;
+    public Canvas menu;
     public float[,] Grid;
 
     // Imports necessary variables from grid manager
@@ -31,13 +34,17 @@ public class PacManManager : MonoBehaviour
         Grid = g.Grid;
         pacManSpeed = g.PacManSpeed;
         WALL = GridManager.WALL;
-        pacManLives = g.PacManLives;
-        pacManPoints = g.PacManPoints;
+        pacManLives = g.Lives;
     }
     
     // Start is called before the first frame update
     void Start()
     {
+        menu.enabled = false;
+        Button btn1 = ResumeButton.GetComponent<Button>();
+        Button btn2 = MenuButton.GetComponent<Button>();
+        btn1.onClick.AddListener(ResumeGame);
+        btn2.onClick.AddListener(ReturnToMenu);
         getGridVariables();
         SpawnPacMan();
     }
@@ -56,14 +63,18 @@ public class PacManManager : MonoBehaviour
     // Un/Pauses the game by un/freezing all objects
     public void PauseGame()
     {
-        if (Time.timeScale == 0f)
-        {
-            Time.timeScale = 1;
-        }
-        else
-        {
-            Time.timeScale = 0f;
-        }
+        Time.timeScale = 0f;
+        menu.enabled = true;
+    }
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        menu.enabled = false;
+    }
+    public void ReturnToMenu()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(0);
     }
 
     // Stops the game
@@ -172,8 +183,7 @@ public class PacManManager : MonoBehaviour
             float pillY = obj.transform.position.y;
             if(pacX == pillX && pacY == pillY)
             {
-                //GetComponent<GridManager>().PacManPoints++; <---------- if points arent working change back to this
-                pacManPoints++;
+                GetComponent<GridManager>().Points++;
                 Destroy(obj);
             }
         }
@@ -194,7 +204,7 @@ public class PacManManager : MonoBehaviour
                 x = 0;
                 y = 0;
                 GetComponent<EnemyManager>().ResetBlinkyPosition();
-                GetComponent<GridManager>().PacManLives = pacManLives;
+                GetComponent<GridManager>().Lives = pacManLives;
             }
             else {
                 GameOver();
