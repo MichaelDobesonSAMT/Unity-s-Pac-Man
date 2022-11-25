@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class PillManager : MonoBehaviour
 {
+    // Public variables
+    public Sprite PillSprite;
+    public GameObject PillPrefab;
+    public GameObject SuperPillPrefab;
+    public float PillSize = 0.15f;
+    public float SuperPillSize = 0.5f;
+
+    // Private variables
     private bool[,] gridWalls;
-    private int horizontal;
-    private int vertical;
     private int columns;
     private int rows;
     private float superPillPercent;
-
-    public Sprite PillSprite;
-    public float PillSize = 0.15f;
-    public float SuperPillSize = 0.5f;
 
     // Start is called before the first frame update
     void Start()
@@ -28,39 +30,37 @@ public class PillManager : MonoBehaviour
         
     }
 
-    // Spawns a Pill (Normal o Super) on the Map
+    // Imports necessary variables from Grid Manager
+    public void GetGridVariables()
+    {
+        var g = GetComponent<GridManager>();
+        gridWalls = g.GridWalls;
+        columns = g.Columns;
+        rows = g.Rows;
+        superPillPercent = g.SuperPillPercent;
+    }
+
+    // Spawns a Pill (Normal o Super) on the grid
     private void SpawnPill(int x, int y, bool isSuper, Transform parent)
     {
+        GameObject g;
         // Spawn Super Pill
         if (isSuper)
         {
-            GameObject g = new GameObject("Super Pill - x: " + x + ",y: " + y);
-
-            g.transform.parent = parent;
-            g.transform.position = new Vector3(x - (horizontal - 0.5f), (vertical - 0.5f) - y);
-            var s = g.AddComponent<SpriteRenderer>();
-            s.sprite = PillSprite;
-            s.color = new Color(255, 255, 0);
-            s.sortingOrder = 1;
-
-            g.tag = "SuperPill";
-            g.transform.localScale = new Vector3(SuperPillSize, SuperPillSize);
+            g = Instantiate(SuperPillPrefab, new Vector3(
+                x - (columns / 2 - 0.5f), 
+                (rows / 2 - 0.5f) - y), Quaternion.identity);
+            g.name = "Super Pill - x: " + x + ",y: " + y;
         }
         // Spawn Normal Pill
         else
         {
-            GameObject g = new GameObject("Pill - x: " + x + ",y: " + y);
-
-            g.transform.parent = parent;
-            g.transform.position = new Vector3(x - (horizontal - 0.5f), (vertical - 0.5f) - y);
-            var s = g.AddComponent<SpriteRenderer>();
-            s.sprite = PillSprite;
-            s.color = new Color(255, 255, 0);
-            s.sortingOrder = 1;
-
-            g.tag = "Pill";
-            g.transform.localScale = new Vector3(PillSize, PillSize);
+            g = Instantiate(PillPrefab, new Vector3(
+                x - (columns / 2 - 0.5f), 
+                (rows / 2 - 0.5f) - y), Quaternion.identity);
+            g.name = "Pill - x: " + x + ",y: " + y;
         }
+        g.transform.parent = parent;
     }
 
     // Places Pills in the Game
@@ -73,7 +73,7 @@ public class PillManager : MonoBehaviour
             {
                 if (!gridWalls[i, j])
                 {
-                    //if it's Corned place a Super Pill
+                    // if it's corned place a Super Pill sometimes
                     if (
                         !(i == 0 && j == 0) && (
                         (j - 1 < 0 || gridWalls[i,j - 1] == true) &&
@@ -108,17 +108,5 @@ public class PillManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    // Imports necessary Variables from Grid Manager
-    public void GetGridVariables()
-    {
-        var g = GetComponent<GridManager>();
-        gridWalls = g.GridWalls;
-        columns = g.Columns;
-        rows = g.Rows;
-        horizontal = g.Horizontal;
-        vertical = g.Vertical;
-        superPillPercent = g.SuperPillPercent;
     }
 }

@@ -1,29 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PacManManager : MonoBehaviour
 {
+    // Public variables
+    public GameObject PacManPrefab;
+    public Sprite PacManSprite;
+    public Sprite PacManSprite2;
+    public float[,] Grid;
+    public float[,] InverseGrid;
+    public int x = 0;
+    public int y = 0;
+
     // Private variables
     private GameObject pacman;
-    private int x = 0;
-    private int y = 0;
     private int col;
     private int row;
     private int WALL;
     private float timeLeft = 0;
     private float pacManSpeed;
-    private int pacManLives;
-
-    // Public variables
-    public Sprite PacManSprite;
-    public Sprite PacManSprite2;
-    public Button ResumeButton;
-    public Button MenuButton;
-    public Canvas menu;
-    public float[,] Grid;
+    private int Lives;  
 
     // Imports necessary variables from grid manager
     public void getGridVariables()
@@ -32,9 +30,10 @@ public class PacManManager : MonoBehaviour
         col = g.Columns;
         row = g.Rows;
         Grid = g.Grid;
+        InverseGrid = g.InverseGrid;
         pacManSpeed = g.PacManSpeed;
         WALL = GridManager.WALL;
-        pacManLives = g.Lives;
+        Lives = g.Lives;
     }
     
     // Start is called before the first frame update
@@ -45,6 +44,7 @@ public class PacManManager : MonoBehaviour
         Button btn2 = MenuButton.GetComponent<Button>();
         btn1.onClick.AddListener(ResumeGame);
         btn2.onClick.AddListener(ReturnToMenu);
+
         getGridVariables();
         SpawnPacMan();
     }
@@ -60,17 +60,21 @@ public class PacManManager : MonoBehaviour
         MovePacMan();
     }
 
-    // Un/Pauses the game by un/freezing all objects
+    // Pauses the game by freezing all objects
     public void PauseGame()
     {
         Time.timeScale = 0f;
         menu.enabled = true;
     }
+
+    // Unpauses the game by unfreezing all objects
     public void ResumeGame()
     {
         Time.timeScale = 1f;
         menu.enabled = false;
     }
+
+    // Changes scene to main menu
     public void ReturnToMenu()
     {
         Time.timeScale = 1f;
@@ -142,10 +146,12 @@ public class PacManManager : MonoBehaviour
 
             // Do all checks
             CheckPacManEatsPill(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
+            CheckPacManEatsSuperPill(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
             CheckPacManEncountersBlinky(x - (col / 2 - 0.5f), (row / 2 - 0.5f) - y);
 
             // Update the Grid (for the AI)
             Grid = GetComponent<GridManager>().SetGrid(x, y);
+            InverseGrid = GetComponent<GridManager>().SetInverseGrid(x, y);
         }
         // Once half of the wait time is over the sprite is changed
         if (timeLeft < pacManSpeed / 2)
@@ -163,17 +169,14 @@ public class PacManManager : MonoBehaviour
     // Creates the Pac-Man and places him on the grid
     public void SpawnPacMan()
     {
-        pacman = new GameObject("Pac-Man");
-        pacman.transform.position = new Vector3(
+        pacman = Instantiate(PacManPrefab, new Vector3(
             x - (col / 2 - 0.5f),
-            (row / 2 - 0.5f) - y);
-        var s = pacman.AddComponent<SpriteRenderer>();
-        s.sprite = PacManSprite;
-        s.sortingOrder = 1;
+            (row / 2 - 0.5f) - y), Quaternion.identity);
+        pacman.name = "Pac-Man";
         timeLeft = 1;
     }
 
-    // Checks if Pac-Man is on a pill, deletes said pill and increases points
+    // Checks if Pac-Man is on a Pill, deletes said Pill and increases points
     public void CheckPacManEatsPill(float pacX, float pacY)
     {
         var pills = GameObject.FindGameObjectsWithTag("Pill");
@@ -189,6 +192,28 @@ public class PacManManager : MonoBehaviour
         }
     }
 
+    // Checks if Pac-Man is on a Super Pill, deletes said Pill, increases points
+    // and allows Pac-Man to eat the ghost for x time while the ghost runs away
+    public void CheckPacManEatsSuperPill(float pacX, float pacY)
+    {
+        var pills = GameObject.FindGameObjectsWithTag("SuperPill");
+        foreach (var obj in pills)
+        {
+            float pillX = obj.transform.position.x;
+            float pillY = obj.transform.position.y;
+            if (pacX == pillX && pacY == pillY)
+            {
+                GetComponent<GridManager>().Points++;
+                Destroy(obj);
+                var enemy = GetComponent<EnemyManager>();
+                if(!enemy.isScared && !enemy.isEaten)
+                {
+                    enemy.isScared = true;
+                }
+            }
+        }
+    }
+
     // Checks if Pac-Man is on the same position as Blinky
     public void CheckPacManEncountersBlinky(float pacX, float pacY)
     {
@@ -198,13 +223,13 @@ public class PacManManager : MonoBehaviour
         if(pacX == blinkyX && pacY == blinkyY)
         {
             // If Pac-Man still has live reset position otherwise Game Over
-            if (pacManLives > 0)
+            if (Lives > 0)
             {
-                pacManLives--;
+                Lives--;
                 x = 0;
                 y = 0;
                 GetComponent<EnemyManager>().ResetBlinkyPosition();
-                GetComponent<GridManager>().Lives = pacManLives;
+                GetComponent<GridManager>().Lives = Lives;
             }
             else {
                 GameOver();

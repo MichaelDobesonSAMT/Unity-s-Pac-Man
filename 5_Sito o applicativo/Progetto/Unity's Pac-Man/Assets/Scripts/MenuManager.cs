@@ -25,7 +25,6 @@ public class MenuManager : MonoBehaviour
     }
     public void IniziaGioco()
     {
-        Debug.Log("funzia");
         SceneManager.LoadScene(1);
     }
     public void ReturnToMenu()

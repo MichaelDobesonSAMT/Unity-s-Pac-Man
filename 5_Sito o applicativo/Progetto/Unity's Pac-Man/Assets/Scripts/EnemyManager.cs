@@ -6,6 +6,20 @@ using UnityEngine.UI;
 
 public class EnemyManager : MonoBehaviour
 {
+    // Public variables
+    public GameObject blinkyPrefab;
+    public Sprite sprite;
+    public Sprite eyesUp;
+    public Sprite eyesDown;
+    public Sprite eyesLeft;
+    public Sprite eyesRight;
+    public RuntimeAnimatorController BlinkyController;
+    [HideInInspector]
+    public bool isScared = false;
+    [HideInInspector]
+    public bool isEaten = false;
+
+    // Private variables
     private GameObject blinky;
     private Animator blinkyAnimator;
     private int blinkyX;
@@ -16,17 +30,12 @@ public class EnemyManager : MonoBehaviour
     private int blinkyFromPac;
     private int columns;
     private int rows;
-    private int horizontal;
-    private int vertical;
     private int WALL;
     private float PAC_AURA;
     private float blinkySpeed;
-
+    private float superPillEffect;
+    private float timeLeft = 0;
     private bool isFirstTime = true;
-
-    public GameObject blinkyPrefab;
-    public Sprite sprite;
-    public RuntimeAnimatorController BlinkyController;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +44,7 @@ public class EnemyManager : MonoBehaviour
         ResetBlinkyPosition();
         SpawnBlinky(blinkyX, blinkyY);
         isFirstTime = false;
+        timeLeft = superPillEffect;
     }
 
     // Update is called once per frame
@@ -52,11 +62,10 @@ public class EnemyManager : MonoBehaviour
         blinkyFromPac = g.BlinkyFromPac;
         columns = g.Columns;
         rows = g.Rows;
-        horizontal = g.Horizontal;
-        vertical = g.Vertical;
         WALL = GridManager.WALL;
         PAC_AURA = GridManager.PAC_AURA;
         blinkySpeed = g.BlinkySpeed;
+        superPillEffect = g.SuperPillEffectTime;
     }
 
     // Finds Random Position for Blinky to Spawn
@@ -69,51 +78,52 @@ public class EnemyManager : MonoBehaviour
             blinkyY = UnityEngine.Random.Range(blinkyFromPac, rows - 1);
         } while (gridWalls[blinkyX, blinkyY]);
 
-        if(!isFirstTime){
-            SetPosition(blinkyX, blinkyY);
+        if (!isFirstTime){
+            SetBlinkyPosition(blinkyX, blinkyY);
         }
     }
 
-    // Places Blinky on the Map
+    // Places Blinky on the Grid
     private void SpawnBlinky(int x, int y)
     {
-        //blinky = new GameObject("Blinky");
-        blinky = Instantiate(blinkyPrefab, new Vector3(x - (horizontal - 0.5f), (vertical - 0.5f) - y), Quaternion.identity);
+        blinky = Instantiate(blinkyPrefab, new Vector3(
+            x - (columns / 2 - 0.5f), 
+            (rows / 2 - 0.5f) - y), Quaternion.identity);
         blinky.name = "Blinky";
-        /*blinky.transform.position = new Vector3(
-            x - (horizontal - 0.5f), 
-            (vertical - 0.5f) - y
-        );*/
-        /*
-        blinky.tag = "Blinky";
-
-        var s = blinky.AddComponent<SpriteRenderer>();
-        s.sprite = sprite;
-        s.color = Color.red;
-        s.sortingOrder = 1;
-
-        var a = blinky.AddComponent<Animator>();
-        blinkyAnimator = blinky.GetComponent<Animator>();
-        blinkyAnimator.runtimeAnimatorController = BlinkyController;
-        */
         blinkyAnimator = blinky.GetComponent<Animator>();
     }
 
-    private void SetPosition(int x, int y)
+    // Sets the position of Blinky
+    private void SetBlinkyPosition(int x, int y)
     {
         blinky.transform.position = new Vector3(
-            x - (horizontal - 0.5f),
-            (vertical - 0.5f) - y
+            x - (columns / 2 - 0.5f),
+            (rows / 2 - 0.5f) - y
         );
     }
 
-    // Every x Blinky moves Closer to Pac-Man
+    // Every x Blinky moves closer to Pac-Man
     private void MoveBlinky()
     {
-        // Get Updated Grid
-        grid = GetComponent<PacManManager>().Grid;
+        // Timer for how long the ghost should be scared for
+        if(isScared && !isEaten)
+        {
+            timeLeft -= Time.deltaTime;
+            if (timeLeft < 0)
+            {
+                isScared = false;
+                timeLeft = superPillEffect;
+            }
+        }
 
-        // If x time hasn't passed don't execute the Method
+        // Get updated Grid
+        grid = GetComponent<PacManManager>().Grid;
+        if (isScared)
+        {
+            grid = GetComponent<PacManManager>().InverseGrid;
+        }
+
+        // If x time hasn't passed don't execute the method
         if (timer < blinkySpeed)
         {
             timer += Time.deltaTime;
@@ -128,38 +138,30 @@ public class EnemyManager : MonoBehaviour
         float west = WALL;
         float south = WALL;
         float east = WALL;
-        float[,] ghostGrid = grid;
-
-        /*
-        if (isScared)
-        {
-            ghostGrid = inverseGrid;
-        }
-        */
 
         // Assign if the positions are in the field
         if (blinkyY > 0)
         {
-            north = ghostGrid[blinkyX, blinkyY - 1];
+            north = grid[blinkyX, blinkyY - 1];
         }
 
         if (blinkyX > 0)
         {
-            west = ghostGrid[blinkyX - 1, blinkyY];
+            west = grid[blinkyX - 1, blinkyY];
         }
 
         if (blinkyY < rows - 1)
         {
-            south = ghostGrid[blinkyX, blinkyY + 1];
+            south = grid[blinkyX, blinkyY + 1];
         }
 
         if (blinkyX < columns - 1)
         {
-            east = ghostGrid[blinkyX + 1, blinkyY];
+            east = grid[blinkyX + 1, blinkyY];
         }
 
         // Positions which are walls or invalid
-        var avoid = columns * 1000;
+        float avoid = columns * 1000;
 
         if (north == WALL || north == PAC_AURA)
         {
@@ -181,100 +183,105 @@ public class EnemyManager : MonoBehaviour
             east = Math.Abs(east * avoid);
         }
 
-        //Debug.Log(north + "N, " + west + "W, " + south + "S, " + east + "E");
+        blinkyAnimator.SetBool("isUp", false);
+        blinkyAnimator.SetBool("isRight", false);
+        blinkyAnimator.SetBool("isLeft", false);
+        blinkyAnimator.SetBool("isDown", false);
+        blinkyAnimator.SetBool("isScared", false);
+
+        // Blinky going up
         if (north <= west && north <= east && north <= south)
         {
-            /*
-            if (isBlinkyEaten)
+            if (isScared && !isEaten)
             {
-                blinkyImage = "img/eyesUp.png";
+                blinkyAnimator.SetBool("isScared", true);
             }
             else
             {
-                blinkyImage = "img/blinkyUp.gif";
+                if (isEaten)
+                {
+                    blinky.GetComponent<SpriteRenderer>().sprite = eyesUp;
+                }
+                else
+                {
+                    blinkyAnimator.SetBool("isUp", true);
+                }
             }
-            */
-            blinkyAnimator.SetBool("isLeft", false);
-            blinkyAnimator.SetBool("isRight", false);
-            blinkyAnimator.SetBool("isDown", false);
-            blinkyAnimator.SetBool("isUp", true);
+            
             blinkyY--;
         }
+        // Blinky going left
         else if (west <= north && west <= east && west <= south)
         {
-            /*
-            if (isBlinkyEaten)
+            if (isScared && !isEaten)
             {
-                blinkyImage = "img/eyesLeft.png";
+                blinkyAnimator.SetBool("isScared", true);
             }
             else
             {
-                blinkyImage = "img/blinkyLeft.gif";
+                if (isEaten)
+                {
+                    blinky.GetComponent<SpriteRenderer>().sprite = eyesLeft;
+                }
+                else
+                {
+                    blinkyAnimator.SetBool("isLeft", true);
+                }
             }
-            */
-            blinkyAnimator.SetBool("isUp", false);
-            blinkyAnimator.SetBool("isRight", false);
-            blinkyAnimator.SetBool("isDown", false);
-            blinkyAnimator.SetBool("isLeft", true);
             blinkyX--;
         }
+        // Blinky going right
         else if (east <= west && east <= north && east <= south)
         {
-            /*
-            if (isBlinkyEaten)
+            if (isScared && !isEaten)
             {
-                blinkyImage = "img/eyesRight.png";
+                blinkyAnimator.SetBool("isScared", true);
             }
             else
             {
-                blinkyImage = "img/blinkyRight.gif";
+                if (isEaten)
+                {
+                    blinky.GetComponent<SpriteRenderer>().sprite = eyesRight;
+                }
+                else
+                {
+                    blinkyAnimator.SetBool("isRight", true);
+                }
             }
-            */
-            blinkyAnimator.SetBool("isLeft", false);
-            blinkyAnimator.SetBool("isUp", false);
-            blinkyAnimator.SetBool("isDown", false);
-            blinkyAnimator.SetBool("isRight", true);
             blinkyX++;
         }
+        // Blinky going down
         else
         {
-            /*
-            if (isBlinkyEaten)
+            if (isScared && !isEaten)
             {
-                blinkyImage = "img/eyesDown.png";
+                blinkyAnimator.SetBool("isScared", true);
             }
             else
             {
-                blinkyImage = "img/blinkyDown.gif";
+                if (isEaten)
+                {
+                    blinky.GetComponent<SpriteRenderer>().sprite = eyesDown;
+                }
+                else
+                {
+                    blinkyAnimator.SetBool("isDown", true);
+                }
             }
-            */
-            blinkyAnimator.SetBool("isUp", false);
-            blinkyAnimator.SetBool("isRight", false);
-            blinkyAnimator.SetBool("isLeft", false);
-            blinkyAnimator.SetBool("isDown", true);
             blinkyY++;
         }
 
-        /*
-        if (isScared && !isBlinkyEaten)
-        {
-            blinkyImage = "img/ghostScared.gif";
-        }
-        blinky.children[0].src = blinkyImage;
-        */
-
         blinky.transform.position = new Vector3(
-            blinkyX - (horizontal - 0.5f),
-            (vertical - 0.5f) - blinkyY
+            blinkyX - (columns / 2 - 0.5f),
+            (rows / 2 - 0.5f) - blinkyY
         );
 
         // Pac goes in contact with blinky
-        /*
-        if (getGridX(pacmanX) == blinkyX && getGridY(pacmanY) == blinkyY && !isScared)
+        var pac = GetComponent<PacManManager>();
+        if (!isScared)
         {
-            youLose();
+            pac.CheckPacManEncountersBlinky(pac.x, pac.y);
         }
-        */
         
     }
 }

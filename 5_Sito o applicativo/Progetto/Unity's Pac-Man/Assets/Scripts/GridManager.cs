@@ -1,43 +1,53 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GridManager : MonoBehaviour
 {
+    // Public constant variables
     public const float PAC_AURA = -0.5f;
     public const int INVALID = -1;
     public const int WALL = -2;
     public const int BLINKY = -3;
+    public const int PAC_AURA_DIST = 2;
 
+    // Public variables
+    public GameObject LivesPrefab;
+    public GameObject HighScorePrefab;
+    public GameObject PointsPrefab;
     public Sprite sprite;
-    public TextMesh gameOver;
-    public Font retro;
     public float[,] Grid;
+    public float[,] InverseGrid;
     public bool[,] GridWalls;
     public int Points = 0;
-    public int HighScore = 100;
-
-    private TextMesh points;
-    private TextMesh lives;
-    private TextMesh highScore;
+    public int HighScore;
     [HideInInspector]
-    public int Vertical, Horizontal, Columns, Rows;
+    public int Columns, Rows;
 
     // Game Setting Variables
     public float WallPercent = 0.3f;
     public float SuperPillPercent = 0.25f;
+    public float SuperPillEffectTime = 5f;
     public int BlinkyFromPac = 10;
     public int Lives = 1;
     public float BlinkySpeed = 0.5f;
     public float PacManSpeed = 0.25f;
 
+    // Private variables
+    private GameObject lives;
+    private GameObject highScore;
+    private GameObject points;
+    private TextMesh livesText;
+    private TextMesh highScoreText;
+    private TextMesh pointsText;
+    
     // Start is called before the first frame update
     void Start()
     {
-        // Set Sizes
-        Horizontal = Vertical = 10;
-        Columns = Rows = Horizontal * 2;
+        // Set sizes
+        Columns = Rows = 20;
         Grid = new float[Columns, Rows];
         GridWalls = new bool[Columns, Rows];
 
@@ -45,7 +55,7 @@ public class GridManager : MonoBehaviour
 
         PlaceGrid();
         
-        PlaceText();
+        PlaceTexts();
     }
 
     // Update is called once per frame
@@ -54,23 +64,28 @@ public class GridManager : MonoBehaviour
         UpdateText();
     }
 
-    private void PlaceText()
+    //Places texts on the scene
+    private void PlaceTexts()
     {
-        lives.text = Lives.ToString();
-        points.text = "0";
-        highScore.text = "High Score: " + HighScore.ToString();
+        GameObject parent = new GameObject("Texts");
 
-        //lives.font = retro;
-        //score.font = retro;
-        //highScore.font = retro;
+        lives = Instantiate(LivesPrefab, new Vector3(-10, 11.5f), Quaternion.identity);
+        lives.name = "Lives";
+        lives.transform.parent = parent.transform;
+        livesText = lives.GetComponent<TextMesh>();
 
-        lives.transform.position = new Vector3(-10, 12);
-        points.transform.position = new Vector3(7, 12);
-        highScore.transform.position = new Vector3(-4, 12);
-        gameOver.transform.position = new Vector3(0, 0);
-        gameOver.gameObject.SetActive(false);
+        highScore = Instantiate(HighScorePrefab, new Vector3(-4, 11.5f), Quaternion.identity);
+        highScore.name = "High Score";
+        highScore.transform.parent = parent.transform;
+        highScoreText = highScore.GetComponent<TextMesh>();
+
+        points = Instantiate(PointsPrefab, new Vector3(5, 11.5f), Quaternion.identity);
+        points.name = "Points";
+        points.transform.parent = parent.transform;
+        pointsText = points.GetComponent<TextMesh>();
     }
 
+    // Update texts
     private void UpdateText()
     {
         lives.text = "Lives: " + Lives.ToString();
@@ -78,7 +93,7 @@ public class GridManager : MonoBehaviour
         highScore.text = "High Score: " + HighScore.ToString();
     }
 
-    // Place Walls in Grid
+    // Place walls in Grid
     private void PlaceWalls()
     {
         for (int i = 0; i < Columns; i++)
@@ -109,7 +124,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Set Grid Values
+    // Set Grid values
     public float[,] SetGrid(int x, int y)
     {
         Grid = new float[Columns, Rows];
@@ -132,6 +147,55 @@ public class GridManager : MonoBehaviour
         return Grid;
     }
 
+    // Set Inverse Grid values
+    public float[,] SetInverseGrid(int x, int y)
+    {
+        InverseGrid = new float[Columns, Rows];
+
+        for (int i = 0; i < Columns; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                if (GridWalls[i, j])
+                {
+                    InverseGrid[i, j] = WALL;
+                }
+                else
+                {
+                    InverseGrid[i, j] = INVALID;
+                }
+            }
+        }
+        var max = Grid.Cast<float>().Max();
+        for (int i = 0; i < Columns; i++)
+        {
+            for (int j = 0; j < Rows; j++)
+            {
+                if (Grid[i, j] == max)
+                {
+                    Visit(InverseGrid, i, j, 0);
+                }
+            }
+        }
+        PlaceAura(InverseGrid, x, y);
+        return InverseGrid;
+    }
+
+    // Places an aura arround Pac-Man to scare ghost away
+    private void PlaceAura(float[,] tempGrid, int row, int col)
+    {
+        for (int i = row - PAC_AURA_DIST; i < row + PAC_AURA_DIST + 1; i++)
+        {
+            for (int j = col - PAC_AURA_DIST; j < col + PAC_AURA_DIST + 1; j++)
+            {
+                if (i < Columns && i >= 0 && j < Rows && j >= 0 && tempGrid[i,j] != WALL)
+                {
+                    tempGrid[i,j] = PAC_AURA;
+                }
+            }
+        }
+    }
+
     // Manhattan Distance Algorithm
     public void Visit(float[,] tempGrid, int col, int row, int dist)
     {
@@ -151,12 +215,12 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    // Spawns an Element of the Map
-    private void SpawnTile(int x, int y, float value, Transform parent)
+    // Spawns an element of the map
+    private void SpawnTile(int x, int y, Transform parent)
     {
         GameObject g = new GameObject("Tile - x: " + x + ",y: " + y);
         g.transform.parent = parent;
-        g.transform.position = new Vector3(x - (Horizontal - 0.5f), (Vertical - 0.5f) - y);
+        g.transform.position = new Vector3(x - (Columns / 2 - 0.5f), (Rows / 2 - 0.5f) - y);
         var s = g.AddComponent<SpriteRenderer>();
         s.sprite = sprite;
         if (Grid[x, y] == WALL)
@@ -166,15 +230,7 @@ public class GridManager : MonoBehaviour
         else
         {
             s.color = new Color(0, 0, 0);
-        }
-
-        // Adds Text for Debug
-        /*
-        var myText = CreateText(g.transform);
-        myText.text = x + ", " + y + "\n: " + value;
-        myText.transform.position = new Vector3(x - (Horizontal), (Vertical) - y, -0.25f);
-        myText.transform.localScale = new Vector3(0.25f, 0.25f);
-        */
+        }      
     }
 
     // Place Grid in the Game
@@ -185,21 +241,8 @@ public class GridManager : MonoBehaviour
         {
             for (int j = 0; j < Rows; j++)
             {
-                SpawnTile(i, j, Grid[i, j], parent.transform);
+                SpawnTile(i, j, parent.transform);
             }
         }
-
-        lives = CreateText(parent.transform);
-        points = CreateText(parent.transform);
-        highScore = CreateText(parent.transform);
-    }
-
-    // Adds Text to a Game Object
-    private TextMesh CreateText(Transform parent)
-    {
-        var go = new GameObject("Text");
-        go.transform.parent = parent;
-        var text = go.AddComponent<TextMesh>();
-        return text;
     }
 }
