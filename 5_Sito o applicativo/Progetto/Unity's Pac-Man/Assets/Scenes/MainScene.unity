@@ -257,6 +257,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blinkyPrefab: {fileID: 6759342018958808043, guid: 1995f3b31916a414c95fff1d628e6b0e, type: 3}
   sprite: {fileID: 21300000, guid: e8ddc51e264afaf4a8e06b8d50fda42c, type: 3}
+  eyesUp: {fileID: 0}
+  eyesDown: {fileID: 0}
+  eyesLeft: {fileID: 0}
+  eyesRight: {fileID: 0}
   BlinkyController: {fileID: 9100000, guid: 03cd4f3686447a2418c51f224e8b5843, type: 2}
   isScared: 0
   isEaten: 0
@@ -273,8 +277,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PacManPrefab: {fileID: 1301124517016486092, guid: 249cc5d546a63b742b958ca6abbe1ce5, type: 3}
+  PauseCanvasPrefab: {fileID: 6200874035672233565, guid: 3a82dedefc6fd1e4a86423f85be3fe8c, type: 3}
   PacManSprite: {fileID: 21300000, guid: 7b9f574f1af29fb4f938ca9fbb949b68, type: 3}
   PacManSprite2: {fileID: 21300000, guid: c9e7f251270feca4c83abcbf8e6da94d, type: 3}
+  x: 0
+  y: 0
 --- !u!114 &1797499753
 MonoBehaviour:
   m_ObjectHideFlags: 0

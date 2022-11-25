@@ -8,11 +8,9 @@ public class PacManManager : MonoBehaviour
 {
     // Public variables
     public GameObject PacManPrefab;
+    public GameObject PauseCanvasPrefab;
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
-    public Button ResumeButton;
-    public Button MenuButton;
-    public Canvas Menu;
     public float[,] Grid;
     public float[,] InverseGrid;
     public int x = 0;
@@ -20,6 +18,8 @@ public class PacManManager : MonoBehaviour
 
     // Private variables
     private GameObject pacman;
+    private GameObject Menu;
+    private Canvas MenuCanvas;
     private int col;
     private int row;
     private int WALL;
@@ -43,12 +43,7 @@ public class PacManManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Menu.enabled = false;
-        Button btn1 = ResumeButton.GetComponent<Button>();
-        Button btn2 = MenuButton.GetComponent<Button>();
-        btn1.onClick.AddListener(ResumeGame);
-        btn2.onClick.AddListener(ReturnToMenu);
-
+        GetPauseCanvas();
         getGridVariables();
         SpawnPacMan();
     }
@@ -64,18 +59,50 @@ public class PacManManager : MonoBehaviour
         MovePacMan();
     }
 
+    private void GetPauseCanvas()
+    {
+        Menu = Instantiate(PauseCanvasPrefab,
+            new Vector3(550, 259.5f, 10),
+            Quaternion.identity);
+        Menu.name = "MenuCanvas";
+
+        var buttons = Menu.GetComponentsInChildren<Transform>();
+        foreach (var button in buttons)
+        {
+            if (button.name == "ResumeButton")
+            {
+                button.GetComponent<Button>().onClick.AddListener(ResumeGame);
+            }
+            else if (button.name == "MenuButton")
+            {
+                button.GetComponent<Button>().onClick.AddListener(ReturnToMenu);
+            }
+        }
+
+        MenuCanvas = Menu.GetComponent<Canvas>();
+        MenuCanvas.enabled = false;
+    }
+
     // Pauses the game by freezing all objects
     public void PauseGame()
     {
-        Time.timeScale = 0f;
-        Menu.enabled = true;
+        if(Time.timeScale == 1f)
+        {
+            Time.timeScale = 0f;
+            MenuCanvas.enabled = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            MenuCanvas.enabled = false;
+        }
     }
 
     // Unpauses the game by unfreezing all objects
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-        Menu.enabled = false;
+        MenuCanvas.enabled = false;
     }
 
     // Changes scene to main menu
