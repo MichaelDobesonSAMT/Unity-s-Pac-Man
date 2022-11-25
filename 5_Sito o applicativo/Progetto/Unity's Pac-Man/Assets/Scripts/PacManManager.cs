@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PacManManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class PacManManager : MonoBehaviour
     public GameObject PacManPrefab;
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
+    public Button ResumeButton;
+    public Button MenuButton;
+    public Canvas Menu;
     public float[,] Grid;
     public float[,] InverseGrid;
     public int x = 0;
@@ -39,7 +43,7 @@ public class PacManManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        menu.enabled = false;
+        Menu.enabled = false;
         Button btn1 = ResumeButton.GetComponent<Button>();
         Button btn2 = MenuButton.GetComponent<Button>();
         btn1.onClick.AddListener(ResumeGame);
@@ -64,14 +68,14 @@ public class PacManManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
-        menu.enabled = true;
+        Menu.enabled = true;
     }
 
     // Unpauses the game by unfreezing all objects
     public void ResumeGame()
     {
         Time.timeScale = 1f;
-        menu.enabled = false;
+        Menu.enabled = false;
     }
 
     // Changes scene to main menu
@@ -85,7 +89,7 @@ public class PacManManager : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0f;
-        GetComponent<GridManager>().gameOver.gameObject.SetActive(false);
+        //GetComponent<GridManager>().gameOver.gameObject.SetActive(false);
     }
 
     // makes Pac-Man move

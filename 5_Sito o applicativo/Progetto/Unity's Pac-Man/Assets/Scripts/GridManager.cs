@@ -88,9 +88,9 @@ public class GridManager : MonoBehaviour
     // Update texts
     private void UpdateText()
     {
-        lives.text = "Lives: " + Lives.ToString();
-        points.text = "Score: " + Points.ToString();
-        highScore.text = "High Score: " + HighScore.ToString();
+        livesText.text = "Lives: " + Lives.ToString();
+        pointsText.text = "Score: " + Points.ToString();
+        highScoreText.text = "High Score: " + HighScore.ToString();
     }
 
     // Place walls in Grid

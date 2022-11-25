@@ -6,20 +6,31 @@ using UnityEngine.UI;
 
 public class MenuManager : MonoBehaviour
 {
+    public GameObject MenuCanvasPrefab;
     private int score;
-    public Button StartButton;
-    public Button SettingsButton;
-    public Button ExitButton;
 
     private void Start()
     {
-        Button btn1 = StartButton.GetComponent<Button>();
-        Button btn2 = SettingsButton.GetComponent<Button>();
-        Button btn3 = ExitButton.GetComponent<Button>();
+        var canvas = Instantiate(MenuCanvasPrefab, 
+            new Vector3(550,259.5f, 10), 
+            Quaternion.identity);
+        canvas.name = "Canvas";
 
-        btn1.onClick.AddListener(IniziaGioco);
-        btn2.onClick.AddListener(GoToSettings);
-        btn3.onClick.AddListener(EsciApplicazione);
+        var buttons = canvas.GetComponentsInChildren<Transform>();
+        foreach (var button in buttons)
+        {
+            if(button.name == "StartButton")
+            {
+                button.GetComponent<Button>().onClick.AddListener(IniziaGioco);
+            }else if (button.name == "SettingsButton")
+            {
+                button.GetComponent<Button>().onClick.AddListener(GoToSettings);
+            }else if (button.name == "ExitButton")
+            {
+                button.GetComponent<Button>().onClick.AddListener(EsciApplicazione);
+            }
+        }
+
         score = PlayerPrefs.GetInt("Score");
       //  GameObject.FindGameObjectWithTag("ScoreText").GetComponent<Text>().text = score.ToString();
     }
