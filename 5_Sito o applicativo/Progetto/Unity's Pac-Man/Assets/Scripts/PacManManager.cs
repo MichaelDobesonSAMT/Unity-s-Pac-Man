@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class PacManManager : MonoBehaviour
 {
     // Public variables
     public GameObject PacManPrefab;
     public GameObject PauseCanvasPrefab;
+    public GameObject GameOverCanvasPrefab;
     public Sprite PacManSprite;
     public Sprite PacManSprite2;
     public float[,] Grid;
@@ -19,7 +21,9 @@ public class PacManManager : MonoBehaviour
     // Private variables
     private GameObject pacman;
     private GameObject Menu;
+    private GameObject GOMenu;
     private Canvas MenuCanvas;
+    private Canvas GameOverCanvas;
     private int col;
     private int row;
     private int WALL;
@@ -44,6 +48,7 @@ public class PacManManager : MonoBehaviour
     void Start()
     {
         GetPauseCanvas();
+        GetGameOverCanvas();
         getGridVariables();
         SpawnPacMan();
     }
@@ -73,19 +78,24 @@ public class PacManManager : MonoBehaviour
         MenuCanvas.enabled = false;
     }
 
+    private void GetGameOverCanvas()
+    {
+        GOMenu = Instantiate(GameOverCanvasPrefab,
+            new Vector3(550, 259.5f, 20),
+            Quaternion.identity);
+        GOMenu.name = "GameOverCanvas";
+
+        GameObject.Find("GOMenuButton").GetComponent<Button>().onClick.AddListener(ReturnToMenu);
+
+        GameOverCanvas = GOMenu.GetComponent<Canvas>();
+        GameOverCanvas.enabled = false;
+    }
+
     // Pauses the game by freezing all objects
     public void PauseGame()
     {
-        if(Time.timeScale == 1f)
-        {
-            Time.timeScale = 0f;
-            MenuCanvas.enabled = true;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-            MenuCanvas.enabled = false;
-        }
+        Time.timeScale = 0f;
+        MenuCanvas.enabled = true;
     }
 
     // Unpauses the game by unfreezing all objects
@@ -106,7 +116,9 @@ public class PacManManager : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0f;
-        //GetComponent<GridManager>().gameOver.gameObject.SetActive(false);
+        GameObject.Find("GOScore").GetComponent<TextMeshProUGUI>().text = "Score: " + GetComponent<GridManager>().Points.ToString();
+        GameObject.Find("GOHighScore").GetComponent<TextMeshProUGUI>().text = "HighScore: " + GetComponent<GridManager>().HighScore.ToString();
+        GameOverCanvas.enabled = true;
     }
 
     // makes Pac-Man move

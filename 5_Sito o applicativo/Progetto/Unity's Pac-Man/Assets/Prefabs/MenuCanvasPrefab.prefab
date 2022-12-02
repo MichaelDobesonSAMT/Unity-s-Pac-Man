@@ -200,7 +200,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SETTINGS
+  m_text: GAME MODE
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}
   m_sharedMaterial: {fileID: -61612526987994213, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}
@@ -760,7 +760,7 @@ RectTransform:
   - {fileID: 6200874035559084857}
   - {fileID: 6200874034997547975}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

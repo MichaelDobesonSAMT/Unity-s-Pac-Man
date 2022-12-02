@@ -24,7 +24,7 @@ public class MenuManager : MonoBehaviour
                 button.GetComponent<Button>().onClick.AddListener(IniziaGioco);
             }else if (button.name == "SettingsButton")
             {
-                button.GetComponent<Button>().onClick.AddListener(GoToSettings);
+                button.GetComponent<Button>().onClick.AddListener(GoToGameMode);
             }else if (button.name == "ExitButton")
             {
                 button.GetComponent<Button>().onClick.AddListener(EsciApplicazione);
@@ -42,9 +42,9 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
-    public void GoToSettings()
+    public void GoToGameMode()
     {
-        SceneManager.LoadScene(2);
+        SceneManager.LoadScene(3);
     }
     public void EsciApplicazione()
     {
