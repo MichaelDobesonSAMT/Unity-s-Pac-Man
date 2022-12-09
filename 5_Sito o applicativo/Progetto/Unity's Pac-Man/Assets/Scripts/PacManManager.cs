@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
+using System;
 
 public class PacManManager : MonoBehaviour
 {
@@ -32,26 +33,13 @@ public class PacManManager : MonoBehaviour
     private float timeLeft = 0;
     private float pacManSpeed;
     private int Lives;  
-
-    // Imports necessary variables from grid manager
-    public void getGridVariables()
-    {
-        var g = GetComponent<GridManager>();
-        col = g.Columns;
-        row = g.Rows;
-        Grid = g.Grid;
-        InverseGrid = g.InverseGrid;
-        pacManSpeed = g.PacManSpeed;
-        WALL = GridManager.WALL;
-        Lives = g.Lives;
-    }
     
     // Start is called before the first frame update
     void Start()
     {
         GetPauseCanvas();
         GetGameOverCanvas();
-        getGridVariables();
+        GetGridVariables();
         SpawnPacMan();
     }
 
@@ -64,7 +52,7 @@ public class PacManManager : MonoBehaviour
             PauseGame();
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && Input.GetKeyDown(KeyCode.P))
         {
             GameWin();
         }
@@ -72,6 +60,20 @@ public class PacManManager : MonoBehaviour
         MovePacMan();
     }
 
+    // Imports necessary variables from grid manager
+    public void GetGridVariables()
+    {
+        var g = GetComponent<GridManager>();
+        col = g.Columns;
+        row = g.Rows;
+        Grid = g.Grid;
+        InverseGrid = g.InverseGrid;
+        pacManSpeed = g.PacManSpeed;
+        WALL = GridManager.WALL;
+        Lives = g.Lives;
+    }
+
+    // Adds pause buttons to the scene
     private void GetPauseCanvas()
     {
         Menu = Instantiate(PauseCanvasPrefab,
@@ -86,6 +88,7 @@ public class PacManManager : MonoBehaviour
         MenuCanvas.enabled = false;
     }
 
+    // Adds game over buttons to the scene
     private void GetGameOverCanvas()
     {
         GOMenu = Instantiate(GameOverCanvasPrefab,
@@ -132,9 +135,9 @@ public class PacManManager : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0f;
-        PlayerPrefs.SetInt("HighScore", GetComponent<GridManager>().HighScore);
         GameObject.Find("GOScore").GetComponent<TextMeshProUGUI>().text = "Score: " + GetComponent<GridManager>().Points.ToString();
         GameObject.Find("GOHighScore").GetComponent<TextMeshProUGUI>().text = "HighScore: " + GetComponent<GridManager>().HighScore.ToString();
+        PlayerPrefs.SetInt("HighScore", GetComponent<GridManager>().HighScore);
         GameOverCanvas.enabled = true;
     }
 
@@ -309,8 +312,13 @@ public class PacManManager : MonoBehaviour
                     Lives--;
                     x = 0;
                     y = 0;
+                    pacman.transform.position = new Vector3(
+                        x - (col / 2 - 0.5f),
+                        (row / 2 - 0.5f) - y);
                     GetComponent<EnemyManager>().ResetBlinkyPosition();
                     GetComponent<GridManager>().Lives = Lives;
+
+                    StartCoroutine(WaitASec());
                 }
                 else
                 {
@@ -318,5 +326,12 @@ public class PacManManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator WaitASec()
+    {
+        Time.timeScale = 0f;
+        yield return new WaitForSecondsRealtime(1);
+        Time.timeScale = 1f;
     }
 }

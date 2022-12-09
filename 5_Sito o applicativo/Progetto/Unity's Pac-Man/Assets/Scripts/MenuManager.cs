@@ -7,9 +7,8 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     public GameObject MenuCanvasPrefab;
-    private int score;
 
-    private void Start()
+    void Start()
     {
         var canvas = Instantiate(MenuCanvasPrefab,
             new Vector3(550, 259.5f, 10),
@@ -32,9 +31,6 @@ public class MenuManager : MonoBehaviour
                 button.GetComponent<Button>().onClick.AddListener(EsciApplicazione);
             }
         }
-
-        score = PlayerPrefs.GetInt("Score");
-        //  GameObject.FindGameObjectWithTag("ScoreText").GetComponent<Text>().text = score.ToString();
     }
     public void IniziaGioco()
     {

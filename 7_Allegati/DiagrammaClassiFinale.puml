@@ -1,0 +1,197 @@
+@startuml
+hide circle
+skinparam defaultFontName Monospaced
+skinparam monochrome true
+skinparam classAttributeIconSize 0
+
+
+	class GridManager {
+		<u>-PAC_AURA : float = -0.5f
+		<u>-INVALID : int = -1
+		<u>-WALL : int = -2
+		<u>-BLINKY : int = -3
+		<u>-PAC_AURA_DIST : int = 2
+		
+		+WallPercent : float = 0.3f
+		+SuperPillPercent : float = 0.25f
+		+SuperPillEffectTime : float = 10f
+		+Lives : int = 3
+		+LivesGained : int = 1
+		+BlinkySpeed : float = 0.5f
+		+PacManSpeed : float = 0.25f
+		
+		+LivesPrefab : GameObject
+		+HighScorePrefab : GameObject
+		+PointsPrefab : GameObject
+		+sprite : Sprite
+		+Grid : float[,]
+		+InverseGrid : float[,]
+		+GridWalls : bool[,]
+		+Points : int = 0
+		+HighScore : int
+		+Columns, Rows, GridSize : int
+		+BlinkyFromPac : int	
+		
+		-lives : GameObject
+		-highScore : GameObject
+		-points : GameObject
+		-livesText : TextMesh
+		-highScoreText : TextMesh
+		-pointsText : TextMesh
+		
+		~Start() : void
+		~Update() : void
+		-GetPlayerSettings() : void
+		-PlaceTexts() : void
+		-UpdateText() : void
+		+PlaceWalls() : void
+		+SetGrid(int, int) : float[,]
+		+SetInverseGrid(int, int) : float[,]
+		-PlaceAura(float[,], int, int) : void
+		+Visit(float[,], int, int, int) : void
+		-SpawnTile(int, int, Transform) : void
+		+PlaceGrid() : void
+	}
+	
+	
+	class PacManManager {
+		+PacManPrefab : GameObject
+		+PauseCanvasPrefab : GameObject
+		+GameOverCanvasPrefab : GameObject
+		+PacManSprite : Sprite
+		+PacManSprite2 : Sprite
+		+Grid : float[,]
+		+InverseGrid : float[,]
+		+x : int = 0
+		+y : int = 0
+		
+		-pacman : GameObject
+		-Menu : GameObject
+		-GOMenu : GameObject
+		-MenuCanvas : Canvas
+		-GameOverCanvas : Canvas
+		-col : int
+		-row : int
+		-WALL : int
+		-timeLeft : float = 0
+		-pacManSpeed : float
+		-Lives : int
+	
+		~Start() : void
+		~Update() : void
+		+GetGridVariables() : void
+		-GetPauseCanvas() : void
+		-GetGameOverCanvas() : void
+		+PauseGame() : void
+		+ResumeGame() : void
+		+ReturnToMenu() : void
+		+GameOver() : void
+		+GameWin() : void
+		-MovePacMan() : void
+		+CheckIfNotWall(int, int) : void
+		+SpawnPacMan() : void
+		+CheckPacManEatsPill(float, float) : void
+		+CheckPacManEatsSuperPill(float, float) : void
+		+CheckPacManEncountersBlinky(float, float) : void
+		-WaitASec() : IEnumerator
+	}
+	
+	class EnemyManager {
+		+blinkyPrefab : GameObject
+		+sprite : Sprite
+		+BlinkyController : RuntimeAnimatorController
+		+isScared : bool = false
+		+isEaten : bool = false
+		+timeLeft : float = 0
+		
+		-blinky : GameObject
+		-blinkyAnimator : Animator
+		-blinkyX : int
+		-blinkyY : int
+		-timer : float
+		-gridWalls : bool[,]
+		-grid : float[,]
+		-blinkyFromPac : int
+		-columns : int
+		-rows : int
+		-WALL : int
+		-PAC_AURA : float
+		-blinkySpeed : float
+		-runawaySpeed : int
+		-superPillEffectTime : float
+		-isFirstTime : bool = true
+	
+		~Start() : void
+		~Update() : void
+		+GetGridVariables() : void
+		+ResetBlinkyPosition() : void
+		-SpawnBlinky(int, int) : void
+		-SetBlinkyPosition(int, int) : void
+		-MoveBlinky() : void
+	}
+	
+	class PillManager(){
+		+PillSprite : Sprite
+		+PillPrefab : GameObject
+		+SuperPillPrefab : GameObject
+		+PillSize : float = 0.15f
+		+SuperPillSize : float = 0.5f
+		
+		-gridWalls : bool[,]
+		-columns : int
+		-rows : int
+		-superPillPercent : float
+		
+		~Start() : void
+		+GetGridVariables() : void
+		-SpawnPill(int, int, bool, Transform) : void
+		+PlacePills() : void
+	}
+	
+	class MenuManager {
+		+MenuCanvasPrefab : GameObject
+		
+		~Start() : void
+		+IniziaGioco() : void
+		+ReturnToMenu() : void
+		+GoToGameMode() : void
+		+EsciApplicazione() : void
+	}
+	
+	class SettingsManager(){
+		+SettingsCanvasPrefab : GameObject
+		
+		-GS : Slider 
+		-WP : Slider 
+		-BS : Slider 
+		-PS : Slider 
+		-PL : Slider 
+		-LG : Slider 
+		-SPP : Slider
+		-SPD : Slider
+		-GStext : TextMeshProUGUI 
+		-WPtext : TextMeshProUGUI 
+		-BStext : TextMeshProUGUI 
+		-PStext : TextMeshProUGUI 
+		-PLtext : TextMeshProUGUI 
+		-LGtext : TextMeshProUGUI 
+		-SPPtext : TextMeshProUGUI
+		-SPDtext : TextMeshProUGUI
+		
+		~Start() : void
+		~Update() : void
+		+GetComponents() : void
+		+ReturnToMenu() : void
+		+ConfirmEdit() : void
+		+ResetValues() : void
+	}
+	
+	class GameModeManager(){
+		~Start() : void
+		+EasyMode() : void
+		+MediumMode() : void
+		+HardMode() : void
+		+Settings() : void
+	}
+
+@enduml

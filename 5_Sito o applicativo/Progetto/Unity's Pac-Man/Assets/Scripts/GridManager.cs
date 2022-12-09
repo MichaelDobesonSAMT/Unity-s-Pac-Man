@@ -13,6 +13,22 @@ public class GridManager : MonoBehaviour
     public const int BLINKY = -3;
     public const int PAC_AURA_DIST = 2;
 
+    // Game Setting Variables
+    [HideInInspector]
+    public float WallPercent = 0.3f;
+    [HideInInspector]
+    public float SuperPillPercent = 0.25f;
+    [HideInInspector]
+    public float SuperPillEffectTime = 10f;
+    [HideInInspector]
+    public int Lives = 3;
+    [HideInInspector]
+    public int LivesGained = 1;
+    [HideInInspector]
+    public float BlinkySpeed = 0.5f;
+    [HideInInspector]
+    public float PacManSpeed = 0.25f;
+
     // Public variables
     public GameObject LivesPrefab;
     public GameObject HighScorePrefab;
@@ -29,22 +45,6 @@ public class GridManager : MonoBehaviour
     public int Columns, Rows, GridSize;
     [HideInInspector]
     public int BlinkyFromPac;
-
-    // Game Setting Variables
-    [HideInInspector]
-    public float WallPercent = 0.3f;
-    [HideInInspector]
-    public float SuperPillPercent = 0.25f;
-    [HideInInspector]
-    public float SuperPillEffectTime = 10f;
-    [HideInInspector]
-    public int Lives = 3;
-    [HideInInspector]
-    public int LivesGained = 1;
-    [HideInInspector]
-    public float BlinkySpeed = 0.5f;
-    [HideInInspector]
-    public float PacManSpeed = 0.25f;
 
     // Private variables
     private GameObject lives;
@@ -77,6 +77,7 @@ public class GridManager : MonoBehaviour
         UpdateText();
     }
 
+    // Imports the settings that the Player set via the Game Mode
     private void GetPlayerSettings()
     {
         GridSize = PlayerPrefs.GetInt("GridSize");

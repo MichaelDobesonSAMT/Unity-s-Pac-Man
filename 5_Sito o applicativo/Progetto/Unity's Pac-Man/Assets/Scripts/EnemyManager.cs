@@ -40,7 +40,6 @@ public class EnemyManager : MonoBehaviour
         SpawnBlinky(blinkyX, blinkyY);
         isFirstTime = false;
         timeLeft = superPillEffectTime;
-        Debug.Log(timeLeft);
     }
 
     // Update is called once per frame

@@ -18,12 +18,12 @@ public class GameModeManager : MonoBehaviour
     public void EasyMode()
     {
         PlayerPrefs.SetInt("GridSize", 15);
-        PlayerPrefs.SetFloat("WallPercent", 0.2f);
-        PlayerPrefs.SetFloat("BlinkySpeed", 1f);
-        PlayerPrefs.SetFloat("PacManSpeed", 0.1f);
+        PlayerPrefs.SetFloat("WallPercent", 0.1f);
+        PlayerPrefs.SetFloat("BlinkySpeed", 0.9f);
+        PlayerPrefs.SetFloat("PacManSpeed", 0.25f);
         PlayerPrefs.SetInt("PlayerLives", 5);
-        PlayerPrefs.SetInt("LivesGained", 3);
-        PlayerPrefs.SetFloat("SuperPillPercent", 0.5f);
+        PlayerPrefs.SetInt("LivesGained", 5);
+        PlayerPrefs.SetFloat("SuperPillPercent", 1f);
         PlayerPrefs.SetInt("SuperPillDuration", 15);
         SceneManager.LoadScene(0);
     }
@@ -41,13 +41,13 @@ public class GameModeManager : MonoBehaviour
     }
     public void HardMode()
     {
-        PlayerPrefs.SetInt("GridSize", 30);
+        PlayerPrefs.SetInt("GridSize", 20);
         PlayerPrefs.SetFloat("WallPercent", 0.4f);
-        PlayerPrefs.SetFloat("BlinkySpeed", 0.8f);
-        PlayerPrefs.SetFloat("PacManSpeed", 0.5f);
+        PlayerPrefs.SetFloat("BlinkySpeed", 0.2f);
+        PlayerPrefs.SetFloat("PacManSpeed", 0.1f);
         PlayerPrefs.SetInt("PlayerLives", 1);
         PlayerPrefs.SetInt("LivesGained", 1);
-        PlayerPrefs.SetFloat("SuperPillPercent", 0.1f);
+        PlayerPrefs.SetFloat("SuperPillPercent", 0.5f);
         PlayerPrefs.SetInt("SuperPillDuration", 5);
         SceneManager.LoadScene(0);
     }

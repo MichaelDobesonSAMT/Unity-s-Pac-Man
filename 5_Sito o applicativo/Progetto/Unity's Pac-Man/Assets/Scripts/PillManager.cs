@@ -24,12 +24,6 @@ public class PillManager : MonoBehaviour
         PlacePills();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     // Imports necessary variables from Grid Manager
     public void GetGridVariables()
     {

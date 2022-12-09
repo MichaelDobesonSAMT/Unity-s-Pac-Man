@@ -29,12 +29,12 @@ public class SettingsManager : MonoBehaviour
     private TextMeshProUGUI SPDtext;
 
 
-    private void Start()
+    void Start()
     {
         GetComponents();
     }
 
-    public void Update()
+    void Update()
     {
         GStext.text = GS.value.ToString();
         WPtext.text = WP.value.ToString() + "%";
