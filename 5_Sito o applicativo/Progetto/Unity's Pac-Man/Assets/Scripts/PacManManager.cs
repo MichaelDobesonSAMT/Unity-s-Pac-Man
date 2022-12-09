@@ -132,10 +132,7 @@ public class PacManManager : MonoBehaviour
     public void GameOver()
     {
         Time.timeScale = 0f;
-        if (GetComponent<GridManager>().Points > GetComponent<GridManager>().HighScore) {
-            GetComponent<GridManager>().HighScore = GetComponent<GridManager>().Points;
-            PlayerPrefs.SetInt("HighScore", GetComponent<GridManager>().HighScore);
-        }
+        PlayerPrefs.SetInt("HighScore", GetComponent<GridManager>().HighScore);
         GameObject.Find("GOScore").GetComponent<TextMeshProUGUI>().text = "Score: " + GetComponent<GridManager>().Points.ToString();
         GameObject.Find("GOHighScore").GetComponent<TextMeshProUGUI>().text = "HighScore: " + GetComponent<GridManager>().HighScore.ToString();
         GameOverCanvas.enabled = true;
