@@ -268,8 +268,26 @@ public class GridManager : MonoBehaviour
     // Place Grid in the Game
     public void PlaceGrid()
     {
+        // Unpause game
         Time.timeScale = 1f;
+
+        // Game border
         GameObject parent = new GameObject("Grid");
+        parent.transform.position = new Vector3(0, 0);
+        parent.transform.localScale = new Vector3(Columns + 0.25f, Rows + 0.25f);
+        var s = parent.AddComponent<SpriteRenderer>();
+        s.sprite = sprite;
+        s.sortingOrder = -5;
+        if(GridSize == 20)
+        {
+            s.color = new Color(0, 0, 255);
+        }
+        else
+        {
+            s.color = new Color(0, 0, 0);
+        }
+
+        // Place Tiles
         for (int i = 0; i < Columns; i++)
         {
             for (int j = 0; j < Rows; j++)

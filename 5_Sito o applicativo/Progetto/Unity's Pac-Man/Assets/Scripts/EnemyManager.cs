@@ -77,6 +77,8 @@ public class EnemyManager : MonoBehaviour
         {
             SetBlinkyPosition(blinkyX, blinkyY);
         }
+        isScared = false;
+        isEaten = false;
     }
 
     // Places Blinky on the Grid
@@ -283,14 +285,5 @@ public class EnemyManager : MonoBehaviour
             blinkyX - (columns / 2 - 0.5f),
             (rows / 2 - 0.5f) - blinkyY
         );
-
-        /*
-        // Pac goes in contact with blinky
-        var pac = GetComponent<PacManManager>();
-        if (!isScared)
-        {
-            pac.CheckPacManEncountersBlinky(pac.x, pac.y);
-        }*/
-
     }
 }

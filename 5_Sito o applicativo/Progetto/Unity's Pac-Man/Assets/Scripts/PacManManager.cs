@@ -32,8 +32,9 @@ public class PacManManager : MonoBehaviour
     private int WALL;
     private float timeLeft = 0;
     private float pacManSpeed;
-    private int Lives;  
-    
+    private int lives;
+    private int livesGained;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,7 +71,8 @@ public class PacManManager : MonoBehaviour
         InverseGrid = g.InverseGrid;
         pacManSpeed = g.PacManSpeed;
         WALL = GridManager.WALL;
-        Lives = g.Lives;
+        lives = g.Lives;
+        livesGained = g.LivesGained;
     }
 
     // Adds pause buttons to the scene
@@ -154,6 +156,8 @@ public class PacManManager : MonoBehaviour
         x = 0;
         y = 0;
         GetComponent<EnemyManager>().ResetBlinkyPosition();
+        lives += livesGained;
+        GetComponent<GridManager>().Lives = lives;
     }
 
     // makes Pac-Man move
@@ -171,7 +175,7 @@ public class PacManManager : MonoBehaviour
         if (timeLeft < 0)
         {
             // Check what key is pressed and checks if the movement makes Pac-Man go out of the borders
-            if (Input.GetKey(KeyCode.S) && y < row - 1)
+            if (Input.GetAxis("Vertical") < 0 && y < row - 1)
             {
                 if (CheckIfNotWall(x, y + 1))
                 {
@@ -180,7 +184,7 @@ public class PacManManager : MonoBehaviour
                     pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
                 }
             }
-            else if (Input.GetKey(KeyCode.D) && x < col - 1)
+            else if (Input.GetAxis("Horizontal") > 0 && x < col - 1)
             {
                 if (CheckIfNotWall(x + 1, y))
                 {
@@ -189,7 +193,7 @@ public class PacManManager : MonoBehaviour
                     pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
                 }
             }
-            else if (Input.GetKey(KeyCode.W) && y > 0)
+            else if (Input.GetAxis("Vertical") > 0 && y > 0)
             {
                 if (CheckIfNotWall(x, y - 1))
                 {
@@ -198,7 +202,7 @@ public class PacManManager : MonoBehaviour
                     pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite2;
                 }
             }
-            else if (Input.GetKey(KeyCode.A) && x > 0)
+            else if (Input.GetAxis("Horizontal") < 0 && x > 0)
             {
                 if (CheckIfNotWall(x - 1, y))
                 {
@@ -285,6 +289,7 @@ public class PacManManager : MonoBehaviour
                 {
                     enemy.isScared = true;
                 }
+                GetComponent<EnemyManager>().timeLeft = GetComponent<GridManager>().SuperPillEffectTime;
             }
         }
     }
@@ -307,16 +312,16 @@ public class PacManManager : MonoBehaviour
             else
             {
                 // If Pac-Man still has live reset position otherwise Game Over
-                if (Lives > 0)
+                if (lives > 0)
                 {
-                    Lives--;
+                    lives--;
                     x = 0;
                     y = 0;
                     pacman.transform.position = new Vector3(
                         x - (col / 2 - 0.5f),
                         (row / 2 - 0.5f) - y);
                     GetComponent<EnemyManager>().ResetBlinkyPosition();
-                    GetComponent<GridManager>().Lives = Lives;
+                    GetComponent<GridManager>().Lives = lives;
 
                     StartCoroutine(WaitASec());
                 }
