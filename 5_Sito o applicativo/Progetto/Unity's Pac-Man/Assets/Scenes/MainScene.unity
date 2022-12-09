@@ -159,7 +159,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -255,8 +255,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c03f7d18a4d5eb4f985f242ac7bbaa0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blinkyPrefab: {fileID: 6759342018958808043, guid: 6f013b67d9a46ed48a2b0a2ca706e871, type: 3}
-  sprite: {fileID: 21300000, guid: dbcfad09cc7148f41bceee48287eec25, type: 3}
+  blinkyPrefab: {fileID: 6759342018958808043, guid: 1995f3b31916a414c95fff1d628e6b0e, type: 3}
+  sprite: {fileID: 21300000, guid: e8ddc51e264afaf4a8e06b8d50fda42c, type: 3}
   BlinkyController: {fileID: 9100000, guid: 03cd4f3686447a2418c51f224e8b5843, type: 2}
   isScared: 0
   isEaten: 0
@@ -276,8 +276,8 @@ MonoBehaviour:
   PacManPrefab: {fileID: 1301124517016486092, guid: 249cc5d546a63b742b958ca6abbe1ce5, type: 3}
   PauseCanvasPrefab: {fileID: 3922768984300978485, guid: 8c3cdd9087b20ae4bbef12eb31c05d6c, type: 3}
   GameOverCanvasPrefab: {fileID: 3922768984300978485, guid: f7781bedc989c5549976ab26be36a06b, type: 3}
-  PacManSprite: {fileID: 21300000, guid: f4431960c46d8aa42920c28ac8aa5a74, type: 3}
-  PacManSprite2: {fileID: 21300000, guid: a4dd0f356a7b0374cac589bd052fc78c, type: 3}
+  PacManSprite: {fileID: 21300000, guid: 7b9f574f1af29fb4f938ca9fbb949b68, type: 3}
+  PacManSprite2: {fileID: 21300000, guid: c9e7f251270feca4c83abcbf8e6da94d, type: 3}
   x: 0
   y: 0
 --- !u!114 &1797499753
@@ -300,11 +300,13 @@ MonoBehaviour:
   HighScore: 100
   Columns: 0
   Rows: 0
+  GridSize: 0
+  BlinkyFromPac: 10
   WallPercent: 0.3
   SuperPillPercent: 0.25
   SuperPillEffectTime: 5
-  BlinkyFromPac: 10
   Lives: 1
+  LivesGained: 1
   BlinkySpeed: 0.5
   PacManSpeed: 0.25
 --- !u!114 &1797499754

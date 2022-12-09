@@ -21,18 +21,29 @@ public class GridManager : MonoBehaviour
     public float[,] Grid;
     public float[,] InverseGrid;
     public bool[,] GridWalls;
+    [HideInInspector]
     public int Points = 0;
+    [HideInInspector]
     public int HighScore;
     [HideInInspector]
-    public int Columns, Rows;
+    public int Columns, Rows, GridSize;
+    [HideInInspector]
+    public int BlinkyFromPac;
 
     // Game Setting Variables
+    [HideInInspector]
     public float WallPercent = 0.3f;
+    [HideInInspector]
     public float SuperPillPercent = 0.25f;
-    public float SuperPillEffectTime = 15f;
-    public int BlinkyFromPac = 10;
-    public int Lives = 1;
+    [HideInInspector]
+    public float SuperPillEffectTime = 10f;
+    [HideInInspector]
+    public int Lives = 3;
+    [HideInInspector]
+    public int LivesGained = 1;
+    [HideInInspector]
     public float BlinkySpeed = 0.5f;
+    [HideInInspector]
     public float PacManSpeed = 0.25f;
 
     // Private variables
@@ -46,8 +57,10 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set sizes
-        Columns = Rows = 20;
+        GetPlayerSettings();
+
+        // Set grid
+        Columns = Rows = GridSize;
         Grid = new float[Columns, Rows];
         GridWalls = new bool[Columns, Rows];
 
@@ -62,6 +75,19 @@ public class GridManager : MonoBehaviour
     void Update()
     {
         UpdateText();
+    }
+
+    private void GetPlayerSettings()
+    {
+        GridSize = PlayerPrefs.GetInt("GridSize");
+        WallPercent = PlayerPrefs.GetFloat("WallPercent");
+        BlinkySpeed = PlayerPrefs.GetFloat("BlinkySpeed");
+        PacManSpeed = PlayerPrefs.GetFloat("PacManSpeed");
+        Lives = PlayerPrefs.GetInt("PlayerLives");
+        LivesGained = PlayerPrefs.GetInt("LivesGained");
+        SuperPillPercent = PlayerPrefs.GetFloat("SuperPillPercent");
+        SuperPillEffectTime = PlayerPrefs.GetInt("SuperPillDuration");
+        BlinkyFromPac = GridSize / 2;
     }
 
     //Places texts on the scene
@@ -88,13 +114,13 @@ public class GridManager : MonoBehaviour
     // Update texts
     private void UpdateText()
     {
-        livesText.text = "Lives: " + Lives.ToString();
-        pointsText.text = "Score: " + Points.ToString();
-        highScoreText.text = "High Score: " + HighScore.ToString();
+        livesText.text = "LIVES: " + Lives.ToString();
+        pointsText.text = "SCORE: " + Points.ToString();
+        highScoreText.text = "HIGH SCORE: " + HighScore.ToString();
     }
 
     // Place walls in Grid
-    private void PlaceWalls()
+    public void PlaceWalls()
     {
         for (int i = 0; i < Columns; i++)
         {
@@ -234,7 +260,7 @@ public class GridManager : MonoBehaviour
     }
 
     // Place Grid in the Game
-    private void PlaceGrid()
+    public void PlaceGrid()
     {
         GameObject parent = new GameObject("Grid");
         for (int i = 0; i < Columns; i++)

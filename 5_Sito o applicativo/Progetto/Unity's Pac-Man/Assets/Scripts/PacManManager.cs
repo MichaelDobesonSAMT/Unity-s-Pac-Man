@@ -15,7 +15,9 @@ public class PacManManager : MonoBehaviour
     public Sprite PacManSprite2;
     public float[,] Grid;
     public float[,] InverseGrid;
+    [HideInInspector]
     public int x = 0;
+    [HideInInspector]
     public int y = 0;
 
     // Private variables
@@ -61,6 +63,12 @@ public class PacManManager : MonoBehaviour
         {
             PauseGame();
         }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            GameWin();
+        }
+
         MovePacMan();
     }
 
@@ -94,8 +102,16 @@ public class PacManManager : MonoBehaviour
     // Pauses the game by freezing all objects
     public void PauseGame()
     {
-        Time.timeScale = 0f;
-        MenuCanvas.enabled = true;
+        if(Time.timeScale == 1f)
+        {
+            Time.timeScale = 0f;
+            MenuCanvas.enabled = true;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+            MenuCanvas.enabled = false;
+        }
     }
 
     // Unpauses the game by unfreezing all objects
@@ -119,6 +135,21 @@ public class PacManManager : MonoBehaviour
         GameObject.Find("GOScore").GetComponent<TextMeshProUGUI>().text = "Score: " + GetComponent<GridManager>().Points.ToString();
         GameObject.Find("GOHighScore").GetComponent<TextMeshProUGUI>().text = "HighScore: " + GetComponent<GridManager>().HighScore.ToString();
         GameOverCanvas.enabled = true;
+    }
+
+    // Resets Grid and position to continue playing
+    public void GameWin()
+    {
+        Destroy(GameObject.Find("Grid"));
+        GetComponent<GridManager>().PlaceWalls();
+        GetComponent<GridManager>().PlaceGrid();
+
+        Destroy(GameObject.Find("Pills"));
+        GetComponent<PillManager>().PlacePills();
+
+        x = 0;
+        y = 0;
+        GetComponent<EnemyManager>().ResetBlinkyPosition();
     }
 
     // makes Pac-Man move
@@ -190,12 +221,20 @@ public class PacManManager : MonoBehaviour
         {
             pacman.GetComponent<SpriteRenderer>().sprite = PacManSprite;
         }
+
+        // If all pills are eaten
+        var pills = GameObject.FindGameObjectsWithTag("Pill");
+        var sPills = GameObject.FindGameObjectsWithTag("SuperPill");
+        if(pills.Length == 0 && sPills.Length == 0)
+        {
+            GameWin();
+        }
     }
 
     // Check if the next space on the map is a wall
-    public bool CheckIfNotWall(int gridX, int gridY)
+    public bool CheckIfNotWall(int x, int y)
     {
-        return (Grid[gridX, gridY] != WALL);
+        return (Grid[x, y] != WALL);
     }
 
     // Creates the Pac-Man and places him on the grid
@@ -257,6 +296,7 @@ public class PacManManager : MonoBehaviour
             // If Blinky is scared
             if (GetComponent<EnemyManager>().isScared)
             {
+                GetComponent<GridManager>().Points += 5;
                 GetComponent<EnemyManager>().isEaten = true;
                 GetComponent<EnemyManager>().timeLeft = 5;
             }

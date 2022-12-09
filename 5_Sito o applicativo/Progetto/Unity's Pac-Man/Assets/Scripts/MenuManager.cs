@@ -11,28 +11,30 @@ public class MenuManager : MonoBehaviour
 
     private void Start()
     {
-        var canvas = Instantiate(MenuCanvasPrefab, 
-            new Vector3(550,259.5f, 10), 
+        var canvas = Instantiate(MenuCanvasPrefab,
+            new Vector3(550, 259.5f, 10),
             Quaternion.identity);
         canvas.name = "Canvas";
 
         var buttons = canvas.GetComponentsInChildren<Transform>();
         foreach (var button in buttons)
         {
-            if(button.name == "StartButton")
+            if (button.name == "StartButton")
             {
                 button.GetComponent<Button>().onClick.AddListener(IniziaGioco);
-            }else if (button.name == "SettingsButton")
+            }
+            else if (button.name == "SettingsButton")
             {
                 button.GetComponent<Button>().onClick.AddListener(GoToGameMode);
-            }else if (button.name == "ExitButton")
+            }
+            else if (button.name == "ExitButton")
             {
                 button.GetComponent<Button>().onClick.AddListener(EsciApplicazione);
             }
         }
 
         score = PlayerPrefs.GetInt("Score");
-      //  GameObject.FindGameObjectWithTag("ScoreText").GetComponent<Text>().text = score.ToString();
+        //  GameObject.FindGameObjectWithTag("ScoreText").GetComponent<Text>().text = score.ToString();
     }
     public void IniziaGioco()
     {

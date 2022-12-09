@@ -64,14 +64,15 @@ public class PillManager : MonoBehaviour
     }
 
     // Places Pills in the Game
-    private void PlacePills()
+    public void PlacePills()
     {
         GameObject parent = new GameObject("Pills");
         for (int i = 0; i < columns; i++)
         {
             for (int j = 0; j < rows; j++)
             {
-                if (!gridWalls[i, j])
+                //if there isn't a Wall
+                if (GetComponent<GridManager>().Grid[i, j] != GridManager.WALL)
                 {
                     // if it's corned place a Super Pill sometimes
                     if (

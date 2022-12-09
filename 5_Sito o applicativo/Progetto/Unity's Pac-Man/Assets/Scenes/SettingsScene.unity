@@ -220,7 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c263c844370199e4687fcbacf8682987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SettingsCanvasPrefab: {fileID: 291874763279366372, guid: 706c67ea940f0304da2e25b02ed37991, type: 3}
+  SettingsCanvasPrefab: {fileID: 291874763279366372, guid: 7366bcbdcd7d77d46a242f839e028e88, type: 3}
 --- !u!1 &1978322931
 GameObject:
   m_ObjectHideFlags: 0
