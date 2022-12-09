@@ -116,6 +116,11 @@ public class GridManager : MonoBehaviour
     {
         livesText.text = "LIVES: " + Lives.ToString();
         pointsText.text = "SCORE: " + Points.ToString();
+        HighScore = PlayerPrefs.GetInt("HighScore");
+        if(Points > HighScore)
+        {
+            HighScore = Points;
+        }
         highScoreText.text = "HIGH SCORE: " + HighScore.ToString();
     }
 
@@ -262,6 +267,7 @@ public class GridManager : MonoBehaviour
     // Place Grid in the Game
     public void PlaceGrid()
     {
+        Time.timeScale = 1f;
         GameObject parent = new GameObject("Grid");
         for (int i = 0; i < Columns; i++)
         {
