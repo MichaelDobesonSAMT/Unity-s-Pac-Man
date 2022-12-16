@@ -37,7 +37,7 @@ public class GameModeManager : MonoBehaviour
             HardMode();
         }
 
-        // 
+        // If a joystick is connected the Custom button gets deactivated
         if (MenuManager.isJoystick)
         {
             GameObject.Find("Custom").SetActive(false);
