@@ -15,30 +15,13 @@ public class MenuManager : MonoBehaviour
             Quaternion.identity);
         canvas.name = "Canvas";
 
-        var buttons = canvas.GetComponentsInChildren<Transform>();
-        foreach (var button in buttons)
-        {
-            if (button.name == "StartButton")
-            {
-                button.GetComponent<Button>().onClick.AddListener(IniziaGioco);
-            }
-            else if (button.name == "SettingsButton")
-            {
-                button.GetComponent<Button>().onClick.AddListener(GoToGameMode);
-            }
-            else if (button.name == "ExitButton")
-            {
-                button.GetComponent<Button>().onClick.AddListener(EsciApplicazione);
-            }
-        }
+        GameObject.Find("StartButton").GetComponent<Button>().onClick.AddListener(IniziaGioco);
+        GameObject.Find("SettingsButton").GetComponent<Button>().onClick.AddListener(GoToGameMode);
+        GameObject.Find("ExitButton").GetComponent<Button>().onClick.AddListener(EsciApplicazione);
     }
     public void IniziaGioco()
     {
         SceneManager.LoadScene(1);
-    }
-    public void ReturnToMenu()
-    {
-        SceneManager.LoadScene(0);
     }
     public void GoToGameMode()
     {
