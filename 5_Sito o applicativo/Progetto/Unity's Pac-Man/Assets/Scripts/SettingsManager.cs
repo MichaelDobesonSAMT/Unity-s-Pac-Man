@@ -120,6 +120,7 @@ public class SettingsManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+
     public void ConfirmEdit()
     {
         PlayerPrefs.SetInt("GridSize", Mathf.RoundToInt(GS.value));

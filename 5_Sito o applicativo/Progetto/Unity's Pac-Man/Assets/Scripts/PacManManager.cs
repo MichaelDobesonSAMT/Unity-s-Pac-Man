@@ -48,11 +48,24 @@ public class PacManManager : MonoBehaviour
     void Update()
     {
         // If the ESC key is pressed pause the game
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown("joystick button 9"))
         {
             PauseGame();
         }
 
+        // If X on joystick is pressed then unpause the game
+        if (Input.GetKeyDown("joystick button 1"))
+        {
+            ResumeGame();
+        }
+
+        // If O on joystick is pressed then return to menu
+        if (Input.GetKeyDown("joystick button 2"))
+        {
+            ReturnToMenu();
+        }
+
+        // Debug that allows me to win
         if (Input.GetKeyDown(KeyCode.L) && Input.GetKeyDown(KeyCode.P))
         {
             GameWin();
@@ -333,6 +346,7 @@ public class PacManManager : MonoBehaviour
         }
     }
 
+    // Stops everything and waits one second
     private IEnumerator WaitASec()
     {
         Time.timeScale = 0f;

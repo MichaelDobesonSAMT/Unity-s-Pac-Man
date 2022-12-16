@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4581764660754520978
 CanvasRenderer:
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MAIN MENU
+  m_text: MAIN MENU (O)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}
   m_sharedMaterial: {fileID: -61612526987994213, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}
@@ -399,7 +399,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 30}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 200, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7031626780711076641
 CanvasRenderer:
@@ -648,7 +648,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RESUME
+  m_text: RESUME (X)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}
   m_sharedMaterial: {fileID: -61612526987994213, guid: 6fd4c3e4274056d479df7f8c33abfbf4, type: 2}

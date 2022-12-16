@@ -13,6 +13,36 @@ public class GameModeManager : MonoBehaviour
         GameObject.Find("Medium").GetComponent<Button>().onClick.AddListener(MediumMode);
         GameObject.Find("Hard").GetComponent<Button>().onClick.AddListener(HardMode);
         GameObject.Find("Custom").GetComponent<Button>().onClick.AddListener(Settings);
+
+        GameObject.Find("Custom").SetActive(true);
+    }
+
+    private void Update()
+    {
+        // If [] on joystick is pressed then change game mode to easy
+        if (Input.GetKeyDown("joystick button 0"))
+        {
+            EasyMode();
+        }
+
+        // If X on joystick is pressed then change game mode to medium
+        if (Input.GetKeyDown("joystick button 1"))
+        {
+            MediumMode();
+        }
+
+        // If O on joystick is pressed then change game mode to hard
+        if (Input.GetKeyDown("joystick button 2"))
+        {
+            HardMode();
+        }
+
+        // 
+        if (MenuManager.isJoystick)
+        {
+            GameObject.Find("Custom").SetActive(false);
+            MenuManager.isJoystick = false;
+        }
     }
 
     public void EasyMode()
