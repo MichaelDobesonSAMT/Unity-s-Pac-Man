@@ -1,0 +1,79 @@
+@startuml
+!pragma useVerticalIf on
+start
+#Gray:Menu;
+	switch(Menu Select)
+		case (Options)
+			#Gray:Change Settings;
+		case (Start)
+		case (Exit)
+			#FireBrick:Quit Game;
+			stop
+	endswitch
+
+#LimeGreen:Start Game;
+	#LightBlue:repeat :Random Map Generated;
+	#LightBlue:Pellets Placed;
+	#Yellow:repeat :Pac-Man Position Reset;
+	#Red:Blinky Position Reset;
+		floating note: Blinky = Enemy Ghost
+	if (Pac-Man Lost All Lives?) then (yes)
+		#FireBrick:You Lose;
+		if(Replay) then (yes)
+			:hi;
+			detach
+		else (no)
+			#FireBrick:Quit Game;
+			stop;
+		endif
+	else (no)
+	endif
+	#Red:repeat :Blinky Follows Pac-Man;
+	repeat while (Blinky Touches Pac-Man?) is (yes) not (no)
+	switch(Player Choice)	
+		case (Options)
+		partition #LightGray "Pause Interface" {
+			switch(Pause Menu Select)
+				case (Options)
+					#Gray:Change Settings;
+				case (Restart)
+				case (Exit)
+					#FireBrick:Quit Game;
+					stop
+			endswitch
+			->//Reset Game//;
+			break;
+		}
+		case (Move Pac-Man)
+	endswitch
+	if (Pac-Man Collects Pellet) then (yes)
+		#DarkOrchid:Earn Point;
+		if(Pellet is Super) then (yes)
+			#Red:repeat:Blinky Runs Away;
+			if (Pac-Man Eats Blinky) then (yes)
+				#DarkOrchid:Earn Point;
+				#Red:Blinky Runs Faster;
+			else (no)
+				'space label only for alignment
+			label sp_lab0
+			endif
+			repeat while (10 Seconds Past?) is (no) not (yes)
+			
+		else (no)
+			label sp_lab0
+			
+		endif
+	else (no)
+		label sp_lab0
+	endif
+	backward:Lose Life;
+	repeat while (All Pellets Collected?) is (no) not (yes)
+	backward:Earn Extra Lives;
+	->//Next Level//;
+	repeat while (You Win);
+	->//Next Level//;
+	detach
+
+
+
+@enduml
